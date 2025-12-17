@@ -1,36 +1,32 @@
+# ========================
 # Python
+# ========================
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
 build/
-develop-eggs/
 dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
 MANIFEST
 .pytest_cache/
-
-# Virtual Environment
-.venv/
+.coverage
+htmlcov/
+.hypothesis/
 venv/
 env/
 ENV/
-
-# ROS 2
+.venv/
 *.log
-*.log.*
+*.tmp
+
+# ========================
+# ROS 2
+# ========================
+*.log
 *.cache
 *.yaml
 *.yml
@@ -43,83 +39,69 @@ ENV/
 *.dll
 *.dylib
 *.pyc
-__pycache__/
 
-# Isaac Sim / Omniverse
+# ========================
+# Isaac Sim / Omniverse / Isaac ROS
+# ========================
 isaac_sim*/
 isaac-sim*/
 .nucleus_cache/
 .ov/
 .omnishm/
 .omniverse/
-
-# Isaac ROS
 isaac_ros*/
 logs/
 
-# Build artifacts
-build/
+# ========================
+# Build artifacts / temporary / certificates
+# ========================
 install/
-log/
 *.build/
 *.pem
 *.p12
 *.key
 *.crt
+tmp/
+temp/
 
+# ========================
 # OS generated files
+# ========================
 .DS_Store
 .DS_Store?
 ._*
 .Spotlight-V100
 .Trashes
-ehthumbs.db
 Thumbs.db
+ehthumbs.db
 desktop.ini
 
-# Editor and IDE files
+# ========================
+# IDE / Editor
+# ========================
 .idea/
 .vscode/
+.vs/
 *.swp
 *.swo
 *~
-.vs/
-.vsc/
 
+# ========================
 # Documentation
+# ========================
 docs/_build/
 docs/_autosummary/
 
+# ========================
 # Environment variables
+# ========================
 .env*
 !.env.example
+!.env.template
 
-# C/C++
-*.o
-*.obj
-*.exe
-*.dll
-*.so
-*.dylib
-*.ilk
-*.pdb
-*.lib
-*.a
-*.iobj
-*.ipdb
-*.tlog
-*.exp
-*.tbd
-
-# Temporary files
-*.tmp
-*.temp
-*.cache
-*.log
-tmp/
-temp/
-
-# Docusaurus specific (inherited from website subdirectory)
+# ========================
+# Node / Docusaurus / website
+# ========================
 .docusaurus/
 .cache-loader
 node_modules/

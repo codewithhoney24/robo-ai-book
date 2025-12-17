@@ -1,0 +1,461 @@
+/* ChatbotWidget.module.css */
+
+/* -------------------------------------------
+   GLOBAL COLOR PALETTE (As per image)
+   ------------------------------------------- */
+:root {
+  --main-dark: #1a1a2e; /* Deep Dark Blue/Black */
+  --accent-blue: #00ffff; /* Neon Cyan Blue */
+  --light-text: #f0f0f0;
+  --faded-text: #aaaaaa;
+  --header-dark: #10101f;
+  --shadow-color: rgba(0, 0, 0, 0.6);
+}
+
+/* -------------------------------------------
+   1. Keyframes Animations (Same as before)
+   ------------------------------------------- */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(0.5); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* -------------------------------------------
+   2. Main Container & Icon Styling 
+   ------------------------------------------- */
+.chatbotContainer {
+  position: fixed; 
+  bottom: 25px; 
+  right: 25px; 
+  z-index: 1000; 
+}
+
+.robotIcon {
+  width: 90px; 
+  height: 90px;
+  background-image: url('/static/img/robot.png');
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+  /* border-radius: 50%; PNG ke liye zaruri nahi */
+  box-shadow: 0 5px 10px var(--shadow-color); 
+  animation: float 4s ease-in-out infinite;
+  transform: translateY(0); 
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.robotIcon:hover {
+  animation: none; 
+  transform: scale(0.95); 
+  box-shadow: 0 3px 6px var(--shadow-color);
+}
+
+
+/* -------------------------------------------
+   3. Chat Window Styling (NEW DARK THEME)
+   ------------------------------------------- */
+.chatWindow {
+  position: absolute; 
+  bottom: 110px; /* Icon height (90px) + space */
+  right: 0;
+  
+  width: 320px; /* Thoda kam kiya taaki image ke frame jaisa lage */
+  height: 500px; /* Height increased */
+  
+  background-color: var(--main-dark); /* Dark background */
+  color: var(--light-text);
+  border: 1px solid var(--accent-blue); /* Neon border */
+  border-radius: 12px;
+  box-shadow: 0 8px 30px var(--shadow-color), 0 0 15px rgba(0, 255, 255, 0.4); /* Neon Glow Shadow */
+  
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  animation: fadeInScale 0.3s ease-out forwards;
+  transform-origin: bottom right; 
+}
+
+
+/* --- 1. Message List Container --- */
+/* Sabse zaroori: Yeh messages ko list main dikhayega aur center nahi karega */
+.messagesList {
+  flex-grow: 1;
+  padding: 20px 15px;
+  overflow-y: auto; /* Scrollbar */
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Har message ke beech gap */
+  width: 100%;
+}
+
+/* ✅ NEW: Scrollbar Styling for Dark Theme */
+.messagesList::-webkit-scrollbar {
+  width: 6px;
+}
+
+.messagesList::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.messagesList::-webkit-scrollbar-thumb {
+  background: var(--accent-blue);
+  border-radius: 10px;
+  opacity: 0.5;
+}
+
+.messagesList::-webkit-scrollbar-thumb:hover {
+  background: #33ffff;
+}
+
+/* --- 2. Row Alignment (Left vs Right) --- */
+.messageRow {
+  display: flex;
+  width: 100%;
+}
+
+/* User Right side par */
+.userRow {
+  justify-content: flex-end;
+}
+
+/* Bot Left side par */
+.botRow {
+  justify-content: flex-start;
+}
+
+/* --- 3. Bubbles Design (Border Wala Look) --- */
+
+/* User Bubble (Neon Border) - ✅ UPDATED: Added animation */
+.userBubble {
+  border: 1px solid var(--accent-blue); /* Neon Border */
+  background-color: rgba(0, 255, 255, 0.05); /* Transparent Blue */
+  color: var(--accent-blue); /* Neon Text */
+  
+  padding: 12px 16px;
+  border-radius: 12px 12px 0 12px; /* Bottom-right corner sharp */
+  max-width: 80%;
+  text-align: left;
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.1); /* Halka Glow */
+  word-wrap: break-word;
+  font-size: 0.95em;
+  
+  /* ✅ NEW: Slide-in animation */
+  animation: slideInRight 0.3s ease;
+}
+
+/* Bot Bubble (White Dim Border) - ✅ UPDATED: Added animation */
+.botBubble {
+  border: 1px solid rgba(255, 255, 255, 0.2); /* White Dim Border */
+  background-color: rgba(255, 255, 255, 0.05); /* Transparent Grey */
+  color: #faf8f8; /* White Text */
+  
+  padding: 12px 16px;
+  border-radius: 12px 12px 12px 0; /* Bottom-left corner sharp */
+  max-width: 80%;
+  text-align: left;
+  word-wrap: break-word;
+  font-size: 0.95em;
+  line-height: 1.4;
+  
+  /* ✅ NEW: Slide-in animation */
+  animation: slideInLeft 0.3s ease;
+}
+
+/* ✅ NEW: Slide Animations */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Loading "Thinking..." Bubble */
+.loadingBubble {
+  align-self: flex-start;
+  color: var(--faded-text);
+  font-style: italic;
+  font-size: 0.85em;
+  margin-left: 10px;
+  animation: pulse 1.5s infinite;
+ opacity: 0.4;
+  background: rgba(0, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+  
+}
+
+@keyframes pulse {
+  0% { opacity: 0.5; }
+  50% { opacity: 1; }
+  100% { opacity: 0.5; }
+}
+
+/* --- Chat Header --- */
+.chatHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 15px 8px 20px;
+  background-color: var(--header-dark); /* Darker shade for header */
+  border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+.headerInfo h2 {
+  margin: 0;
+  font-size: 1.2em;
+  color: var(--accent-blue); /* ROBO AI in neon blue */
+}
+
+.headerInfo p {
+  margin: 0;
+  font-size: 0.75em;
+  color: var(--faded-text);
+  opacity: 0.8;
+}
+
+/* ✅ UPDATED: Header Controls with gap for multiple buttons */
+.headerControls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* ✅ UPDATED: Control Button (Urdu Toggle, Refresh) - Dark Theme */
+.controlButton {
+  background: rgba(0, 255, 255, 0.1); /* Neon Blue Transparent */
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  color: var(--accent-blue);
+  font-size: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.controlButton:hover {
+  background: rgba(0, 255, 255, 0.2);
+  border-color: var(--accent-blue);
+  transform: scale(1.05);
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.3);
+}
+
+.controlButton:active {
+  transform: scale(0.95);
+}
+
+/* ✅ NEW: Disabled state for translation loading */
+.controlButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+  background: rgba(0, 255, 255, 0.05);
+}
+
+/* ✅ UPDATED: Close Button - Dark Theme */
+.closeButton {
+  background: rgba(255, 0, 0, 0.1);
+  border: 1px solid rgba(255, 0, 0, 0.3);
+  color: #ff4444;
+  font-size: 16px;
+  font-weight: bold;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeButton:hover {
+  background: rgba(255, 0, 0, 0.3);
+  border-color: #ff4444;
+  transform: scale(1.05);
+  box-shadow: 0 0 8px rgba(255, 0, 0, 0.3);
+}
+
+/* --- Chat Body (Welcome Screen) --- */
+.chatBody {
+  flex-grow: 1; 
+  padding: 20px 15px; 
+  text-align: center;
+  overflow-y: auto; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Robot Image in Welcome Screen */
+.roboEye {
+  /* Size of the small robot inside the chat window */
+  width: 120px; 
+  height: 120px;
+  
+  /* Use the same transparent robot image */
+  background-image: url('/static/img/robot.png');
+  background-size: contain; /* 'contain' rakhenge taaki poora robot dikhe */
+  background-position: center;
+  background-repeat: no-repeat;
+  
+  /* Remove background-color and border-radius as it's now a full image */
+  
+  /* Add the glowing effect to the container box */
+  box-shadow: 0 0 20px var(--accent-blue); /* Neon Glow Effect */
+  margin-bottom: 25px;
+  
+  /* Optional: Thoda sa animated pulse daal sakte hain */
+  animation: robotPulse 2s infinite alternate;
+}
+
+@keyframes robotPulse {
+    0% {
+        box-shadow: 0 0 15px var(--accent-blue);
+    }
+    100% {
+        box-shadow: 0 0 25px var(--accent-blue), 0 0 5px rgba(0, 255, 255, 0.6);
+    }
+}
+
+.welcomeText {
+  font-size: 1.4em;
+  color: var(--accent-blue);
+  margin-bottom: 5px;
+}
+
+.guideText {
+  font-size: 0.9em;
+  color: var(--faded-text);
+  margin-bottom: 30px;
+  line-height: 1.4;
+}
+
+/* Tip Boxes */
+.tipBox {
+  width: 90%;
+  background-color: rgba(0, 255, 255, 0.1); /* Semi-transparent blue */
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  padding: 10px;
+  border-radius: 8px;
+  text-align: left;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: flex-start;
+  font-size: 0.85em;
+}
+
+.tipIcon {
+  font-size: 1.2em;
+  margin-right: 8px;
+}
+
+.tipBox p {
+  margin: 0;
+  color: var(--light-text);
+}
+
+
+/* --- 4. Footer Input Design (Matching Theme) --- */
+.chatFooter {
+  display: flex;
+  padding: 12px;
+  border-top: 1px solid rgba(0, 255, 255, 0.2);
+  background-color: #10101f;
+  align-items: center;
+}
+
+.footerInput {
+  flex-grow: 1;
+  background-color: #1a1a2e;
+  border: 1px solid rgba(0, 255, 255, 0.3); /* Input ka border */
+  color: rgb(249, 248, 248);
+  padding: 10px 12px;
+  border-radius: 6px;
+  outline: none;
+  font-size: 0.9em;
+  margin-right: 8px;
+}
+
+.footerInput::placeholder {
+  color: var(--faded-text);
+}
+
+.footerInput:focus {
+  border-color: var(--accent-blue); /* Focus karne par Neon Blue */
+  box-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+}
+
+/* ✅ NEW: Disabled state for input */
+.footerInput:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: rgba(26, 26, 46, 0.5);
+}
+
+.footerButton {
+  background: none;
+  border: 1px solid var(--accent-blue);
+  color: var(--accent-blue);
+  padding: 10px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.footerButton:hover {
+  background-color: var(--accent-blue);
+  color: #1a1a2e;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+/* ✅ NEW: Disabled state for send button */
+.footerButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  border-color: var(--faded-text);
+  color: var(--faded-text);
+}
+
+.footerButton:disabled:hover {
+  background: none;
+  color: var(--faded-text);
+  box-shadow: none;
+}
+
+/* ✅ NEW: Welcome Screen Styling */
+.welcomeScreen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+}
+

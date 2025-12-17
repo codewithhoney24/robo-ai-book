@@ -1,0 +1,50 @@
+
+
+
+# -----------------------------------------------------------------------
+# General / OS Files
+# -----------------------------------------------------------------------
+.DS_Store
+.vscode/
+
+# -----------------------------------------------------------------------
+# Python/Virtual Environment Files
+# -----------------------------------------------------------------------
+# Virtual Environment Folder
+.venv/
+venv/
+env/
+# Compiled Python files
+__pycache__/
+*.pyc
+
+# -----------------------------------------------------------------------
+# Node.js / Docusaurus (Frontend) Files
+# -----------------------------------------------------------------------
+/node_modules
+/build
+.docusaurus
+.cache-loader
+
+# -----------------------------------------------------------------------
+# Local Data Storage (Qdrant and other databases)
+# -----------------------------------------------------------------------
+# Ignore local data folders created by vector databases or caches
+/storage
+/data_storage
+/qdrant_storage 
+
+# -----------------------------------------------------------------------
+# Sensitive Files (API Keys, Database Credentials)
+# -----------------------------------------------------------------------
+# Environment variables that hold secrets (Must NOT be committed!)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs and Debug files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

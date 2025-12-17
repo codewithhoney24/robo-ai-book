@@ -1,0 +1,252 @@
+/* stylelint-disable docusaurus/copyright-header */
+
+/* =========================================
+   1. GLOBAL VARIABLES & THEME OVERRIDES
+   ========================================= */
+:root {
+  /* Primary Color: Neon Cyan */
+  --ifm-color-primary: #00FFFF;
+  --ifm-color-primary-dark: #00E6E6;
+  --ifm-color-primary-darker: #00CCCC;
+  --ifm-color-primary-darkest: #00B3B3;
+  --ifm-color-primary-light: #33FFFF;
+  --ifm-color-primary-lighter: #66FFFF;
+  --ifm-color-primary-lightest: #99FFFF;
+
+  /* Links & Menu Colors */
+  --ifm-link-color: #00FFFF;
+  --ifm-menu-color: #00FFFF;
+}
+
+/* =========================================
+   2. NAVBAR (TOP MENU)
+   ========================================= */
+.navbar {
+  border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+.navbar__brand,
+.navbar__title {
+  color: #00FFFF !important;
+}
+
+.navbar__item, 
+.navbar__link {
+  color: #00FFFF !important;
+  font-weight: bold;
+}
+
+.navbar__item:hover, 
+.navbar__link:hover {
+  color: #ffffff !important;
+  text-shadow: 0 0 10px #00FFFF;
+}
+
+.navbar__items .button {
+    color: #000 !important;
+    background: #00FFFF !important;
+    border: 1px solid #00FFFF !important;
+    font-weight: 800;
+}
+
+/* =========================================
+   3. SIDEBAR (LEFT MENU)
+   ========================================= */
+.menu__link {
+  color: #00FFFF !important;
+}
+
+.menu__link:hover {
+  background-color: rgba(0, 255, 255, 0.1);
+  color: #fff !important;
+}
+
+.menu__link--active {
+  color: #ffffff !important; 
+  background-color: rgba(0, 255, 255, 0.2) !important;
+  border-right: 3px solid #00FFFF;
+}
+
+/* =========================================
+   4. HEADINGS & LINKS
+   ========================================= */
+h1, h2, h3, h4, h5, h6 {
+  color: #00FFFF !important;
+}
+
+a {
+  color: #00FFFF;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #33FFFF;
+  text-decoration: underline;
+}
+
+.breadcrumbs__link {
+    color: #00FFFF !important;
+}
+
+/* =========================================
+   5. BUTTONS
+   ========================================= */
+.button--primary {
+  background-color: #00FFFF !important;
+  border-color: #00FFFF !important;
+  color: #000000 !important;
+  font-weight: 800;
+}
+
+.button--primary:hover {
+  background-color: #ccffff !important;
+  color: #000 !important;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+}
+
+/* =========================================
+   6. CUSTOM HERO SECTION (Homepage)
+   ========================================= */
+.heroBanner {
+  padding: 6rem 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+  color: #00FFFF !important;
+}
+
+.heroTitle {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  color: #00FFFF !important;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+}
+
+.heroSubtitle {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  color: #a5f3fc !important;
+}
+
+.node {
+  background-color: rgba(15, 23, 42, 0.8);
+  color: #00FFFF !important;
+  padding: 0.5rem 1.2rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.node:hover {
+  background-color: #00FFFF;
+  color: #000 !important;
+  box-shadow: 0 0 10px #00FFFF;
+}
+
+.navButton, .systemBadge {
+    color: #00FFFF !important;
+    border: 1px solid #00FFFF;
+    padding: 5px 15px;
+    border-radius: 20px;
+    background: transparent;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.navButton:hover, .systemBadge:hover {
+    background: #00FFFF;
+    color: #000 !important;
+    text-decoration: none;
+}
+
+.primaryButton {
+    background-color: #00FFFF !important;
+    color: #000 !important;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 1.2rem;
+    display: inline-block;
+    transition: 0.3s;
+}
+
+.primaryButton:hover {
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+    text-decoration: none;
+    color: #000;
+}
+
+/* =========================================
+   7. 👇 GENERAL BODY TEXT (FORCE ALL) 👇
+   ========================================= */
+/* Ye rule poori website ke body text, paragraphs, lists, aur table cells ko target karega */
+body, p, ul, ol, li, td, th, span, div {
+    color: #00FFFF !important;
+}
+
+/* Docusaurus ke main content wrapper ke liye bhi */
+[class^='docItemContainer'] {
+    color: #00FFFF !important;
+}
+
+/* =========================================
+   8. RIGHT SIDEBAR (TABLE OF CONTENTS) FIX
+   ========================================= */
+/* Ye Right Sidebar ke links ko Neon Cyan karega */
+.table-of-contents__link {
+  color: #00FFFF !important;
+  font-weight: 500;
+}
+
+/* Active link (jo hissa aap parh rahe hain) */
+.table-of-contents__link--active {
+  color: #ffffff !important; /* Active wala White ho jaye taake highlight ho */
+  background: rgba(0, 255, 255, 0.2);
+  border-left: 3px solid #00FFFF;
+  padding-left: 10px;
+}
+
+.table-of-contents__link:hover {
+  color: #33FFFF !important;
+  text-decoration: none;
+}
+
+/* =========================================
+   9. BODY TEXT & PARAGRAPHS FIX
+   ========================================= */
+/* Ye specifically article ke andar wale text ko target karega */
+.markdown p,
+.markdown li,
+.markdown ul,
+.markdown ol,
+.markdown span,
+.markdown strong {
+    color: #00FFFF !important;
+}
+
+/* Agar koi Code Block ke bahar text reh gaya ho */
+.theme-doc-markdown {
+    color: #00FFFF !important;
+}
+
+/* 👇 FINAL FORCE FIX: Ye code har qisam ke text ko Neon Cyan kar dega */
+body, p, li, ul, ol, span, td, th, div[class^='docItemContainer'] {
+    color: #00FFFF !important;
+}
+
+/* Right Sidebar Links Fix */
+.table-of-contents__link {
+    color: #00FFFF !important;
+}
+
+/* Active Link White rahay */
+.table-of-contents__link--active {
+    color: #ffffff !important;
+}

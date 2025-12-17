@@ -1,0 +1,151 @@
+/* Hero Banner */
+.heroBanner {
+  top: 10px;
+  padding: 9rem 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0f172a, #1e293b); /* Dark gradient background */
+  border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+  color: rgb(0, 255, 255) !important; /* ✅ Global Color applied */
+}
+
+@media screen and (max-width: 996px) {
+  .heroBanner {
+    padding: 2rem;
+  }
+}
+
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Top Navbar Buttons */
+.topButtons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.navButton {
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  background-color: #075765; /* Blue button */
+  color: rgb(0, 255, 255) !important; /* ✅ Text Color Fixed */
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.navButton:hover {
+  background-color: #0994df;
+  color: #fff !important; /* Hover pe white taake parha jaye */
+}
+
+/* System Badge */
+.systemBadge {
+  background-color: #5f10b9; /* Purple */
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  color: rgb(0, 255, 255) !important; /* ✅ Text Color Fixed */
+  font-weight: bold;
+  padding: 0.3rem 0.8rem;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+}
+
+.systemBadge:hover {
+  background-color: #0994df;
+}
+
+/* Hero Title (Main Heading) */
+.heroTitle {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  /* 👇 YE MISSING THA, AB ADD KAR DIYA HAI */
+  color: rgb(0, 255, 255) !important; 
+}
+
+@media screen and (max-width: 768px) {
+  .heroTitle {
+    font-size: 2.2rem;
+  }
+}
+
+/* Hero Subtitle */
+.heroSubtitle {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  color: rgb(0, 255, 255) !important; /* ✅ Text Color Fixed */
+}
+
+/* Interactive AI Nodes */
+.aiNodes {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-bottom: 2rem;
+}
+
+.node {
+  background-color: #64748b; /* Gray-blue */
+  color: rgb(0, 255, 255) !important; /* ✅ Text Color Fixed */
+  padding: 0.4rem 1rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  border: 1px solid rgba(0, 255, 255, 0.1);
+}
+
+.node:hover {
+  background-color: #0994df;
+  color: white !important;
+}
+
+/* Main CTA Buttons */
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.primaryButton {
+  background-color: #064e74; /* Blue */
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  color: rgb(0, 255, 255) !important; /* ✅ Text Color Fixed */
+  padding: 0.7rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.primaryButton:hover {
+  background-color: #00FFFF; /* Neon Hover */
+  color: #000 !important; /* Text Black on Hover */
+  border: 1px solid rgb(0, 255, 255);
+}
+
+.secondaryButton {
+  background-color: transparent;
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  color: rgb(0, 255, 255) !important; /* ✅ Text Color Fixed */
+  padding: 0.7rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.secondaryButton:hover {
+  background-color: rgba(0, 255, 255, 0.1);
+  border: 1px solid rgba(0, 255, 255, 0.8);
+}
