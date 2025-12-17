@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "@neondatabase/serverless": "^1.0.2",
+    "better-auth": "^1.4.6",
+    "dotenv": "^17.2.3",
+    "drizzle-orm": "^0.41.0",
+    "pg": "^8.16.3",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.16.0",
+    "cross-env": "^10.1.0",
+    "dotenv-cli": "^11.0.0",
+    "drizzle-kit": "^0.31.8"
+  }
+}

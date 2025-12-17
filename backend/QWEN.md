@@ -1,4 +1,4 @@
-﻿# Qwen Code Rules
+# Qwen Code Rules
 
 This file is generated during init for the selected agent.
 
@@ -208,8 +208,3 @@ Wait for consent; never auto-create ADRs. Group related decisions (stacks, authe
 
 ## Code Standards
 See `.specify/memory/constitution.md` for code quality, testing, performance, security, and architecture principles.
-
-## Qwen Added Memories
-- Docusaurus website ke liye sidebar document IDs aur navigation links ka issue resolve kar diya gaya. Docs directory ka sahi path set kiya gaya (../docs), sidebar configuration sahi kiya gaya, aur navbar/footer links correct document IDs ko point karne lagaye. Sab errors clear hain aur website ab properly chal rahi hai.
-- Project documentation includes several key modules: Module 0 covers Physical AI foundations, embodied intelligence, and sensor systems (LIDAR, Cameras, IMUs). Module 1 covers ROS 2 architecture with nodes, topics, and services. Module 2 covers Digital Twins with URDF (Unified Robot Description Format) and physics simulation in Gazebo and Unity. Module 3 covers NVIDIA Isaac platform including Isaac Sim, synthetic data generation, and Visual SLAM (VSLAM). These modules form the core curriculum for the Physical AI & Humanoid Robotics course.
-- Module 4 in the documentation covers Humanoid Robotics, including kinematics, balance control, manipulation, HRI (Human-Robot Interaction) design, conversational robotics, and a capstone project on autonomous humanoid development. The documentation also includes Isaac Sim for synthetic data generation, RL (Reinforcement Learning) for sim-to-real transfer, and ROS-VSLAM navigation systems.

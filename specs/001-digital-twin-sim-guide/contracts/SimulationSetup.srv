@@ -1,0 +1,21 @@
+# Simulation Environment Setup Service Definition
+
+# This service handles the initialization and configuration 
+# of simulation environments (Gazebo/Unity) for digital twin applications
+
+string world_file_path     # Path to the SDF/URDF world file to load
+string robot_model_path    # Path to the URDF robot model file
+bool enable_physics        # Whether to enable physics simulation
+float gravity_x           # Gravity vector X component
+float gravity_y           # Gravity vector Y component
+float gravity_z           # Gravity vector Z component (typically -9.81)
+float[] friction_params   # Array of friction coefficients for different materials
+bool enable_collision_detection  # Whether to enable collision detection
+---
+bool success              # True if setup was successful
+string error_message      # Error description if success is False
+string simulation_id      # Unique ID of the created simulation instance
+---
+# Provides feedback during the setup process
+string status             # Current status of the setup process
+string details            # Additional details about the current status

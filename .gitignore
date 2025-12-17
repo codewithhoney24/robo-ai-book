@@ -1,0 +1,126 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+.pytest_cache/
+
+# Virtual Environment
+.venv/
+venv/
+env/
+ENV/
+
+# ROS 2
+*.log
+*.log.*
+*.cache
+*.yaml
+*.yml
+*.db3
+*.db
+.deps/
+*.o
+*.a
+*.so
+*.dll
+*.dylib
+*.pyc
+__pycache__/
+
+# Isaac Sim / Omniverse
+isaac_sim*/
+isaac-sim*/
+.nucleus_cache/
+.ov/
+.omnishm/
+.omniverse/
+
+# Isaac ROS
+isaac_ros*/
+logs/
+
+# Build artifacts
+build/
+install/
+log/
+*.build/
+*.pem
+*.p12
+*.key
+*.crt
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Editor and IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.vs/
+.vsc/
+
+# Documentation
+docs/_build/
+docs/_autosummary/
+
+# Environment variables
+.env*
+!.env.example
+
+# C/C++
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.dylib
+*.ilk
+*.pdb
+*.lib
+*.a
+*.iobj
+*.ipdb
+*.tlog
+*.exp
+*.tbd
+
+# Temporary files
+*.tmp
+*.temp
+*.cache
+*.log
+tmp/
+temp/
+
+# Docusaurus specific (inherited from website subdirectory)
+.docusaurus/
+.cache-loader
+node_modules/
+build/

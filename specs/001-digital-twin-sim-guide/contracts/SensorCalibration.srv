@@ -1,0 +1,19 @@
+# Sensor Calibration Service Definition
+
+# This service handles the calibration of simulated sensors
+# to match real-world characteristics and noise patterns
+
+string sensor_name            # Name of the sensor to calibrate
+string sensor_type            # Type of sensor (LiDAR, depth_camera, IMU, etc.)
+float[] calibration_params    # Array of calibration parameters specific to sensor type
+bool enable_noise_model       # Whether to enable realistic noise modeling
+float noise_mean             # Mean value for noise (if applicable)
+float noise_std_dev          # Standard deviation for noise (if applicable)
+---
+bool success                 # True if calibration was successful
+string error_message         # Error description if success is False
+string calibration_id        # Unique ID of the calibration result
+---
+# Provides feedback during the calibration process
+string status               # Current status of the calibration process
+string details              # Additional details about the current status

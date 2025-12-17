@@ -1,0 +1,32 @@
+[
+  {
+    "id": "ch1_introduction",
+    "content": "Chapter 1: Introduction to AI and Robotics. Artificial Intelligence (AI) and robotics are two rapidly evolving fields that have transformed the way we think about technology and its applications. AI refers to the simulation of human intelligence in machines that are programmed to think like humans and mimic their actions. Robotics is the branch of technology that deals with the design, construction, operation, and use of robots. When combined, AI and robotics create systems that can perceive, reason, act, and adapt to their environment. This integration has led to significant advancements in various fields, including manufacturing, healthcare, space exploration, and domestic applications.",
+    "source_location": "Chapter 1, Page 1-15",
+    "book_id": "ai_robotics_book"
+  },
+  {
+    "id": "ch2_foundations",
+    "content": "Chapter 2: Foundations of AI. The foundations of AI are rooted in mathematics, computer science, and cognitive psychology. Key components include machine learning, natural language processing, computer vision, and expert systems. Machine learning, a subset of AI, involves algorithms that improve automatically through experience. It includes supervised learning (with labeled data), unsupervised learning (finding hidden patterns), and reinforcement learning (learning through interaction with an environment). Deep learning, a specialized subset of machine learning, uses neural networks with multiple layers to analyze various factors of data.",
+    "source_location": "Chapter 2, Page 16-45",
+    "book_id": "ai_robotics_book"
+  },
+  {
+    "id": "ch3_robotics_basics",
+    "content": "Chapter 3: Robotics Basics. Robotics involves the design, construction, and operation of robots. The key components of a robot include sensors (for perceiving the environment), actuators (for movement), a controller (the 'brain' of the robot), and a power supply. There are various types of robots including industrial robots, service robots, medical robots, and military robots. The design process involves considering kinematics (motion), dynamics (forces), and control systems. Modern robots often incorporate AI to enhance their capabilities, enabling them to adapt and learn from their environment.",
+    "source_location": "Chapter 3, Page 46-78",
+    "book_id": "ai_robotics_book"
+  },
+  {
+    "id": "ch4_perception",
+    "content": "Chapter 4: Perception in AI and Robotics. Perception is crucial for AI systems and robots to interact with the real world. It involves processing sensory information to understand the environment. In robotics, perception systems typically include cameras, LiDAR, ultrasonic sensors, and other devices to gather information about the surroundings. Computer vision is a key component, enabling systems to interpret and analyze visual information. Simultaneous Localization and Mapping (SLAM) is a technique used by robots to build a map of an unknown environment while simultaneously keeping track of their location within it.",
+    "source_location": "Chapter 4, Page 79-110",
+    "book_id": "ai_robotics_book"
+  },
+  {
+    "id": "ch5_planning",
+    "content": "Chapter 5: Planning and Decision Making. Planning and decision making are essential functions for autonomous agents and robots. AI planning involves determining a sequence of actions to achieve a goal. This can be done in various environments, including deterministic and non-deterministic ones. Motion planning in robotics focuses on finding a path for a robot to move from one position to another while avoiding obstacles. Decision making in AI often involves reasoning under uncertainty, using techniques like probability theory, decision trees, and utility theory. The integration of planning and perception allows robots to operate effectively in dynamic environments.",
+    "source_location": "Chapter 5, Page 111-145",
+    "book_id": "ai_robotics_book"
+  }
+]
