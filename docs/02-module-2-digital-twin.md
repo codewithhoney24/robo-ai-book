@@ -2,6 +2,10 @@
 id: digital-twin
 title: "Module 2: The Digital Twin (Gazebo & Unity)"
 slug: /module-2/digital-twin
+difficulty: Intermediate
+category: Simulation
+hardware_focus: [RTX-GPU]
+software_focus: [Python, Ubuntu]
 ---
 
 ## Introduction to Digital Twins in Robotics

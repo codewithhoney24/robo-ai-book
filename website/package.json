@@ -17,8 +17,14 @@
   "dependencies": {
     "@docusaurus/core": "3.9.2",
     "@docusaurus/preset-classic": "3.9.2",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
     "@mdx-js/react": "^3.0.0",
+    "@mui/material": "^7.3.6",
+    "@mui/x-date-pickers": "^8.22.1",
+    "better-auth": "^0.2.11",
     "clsx": "^2.0.0",
+    "date-fns": "^4.1.0",
     "prism-react-renderer": "^2.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"

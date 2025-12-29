@@ -1,6 +1,6 @@
-# Tasks: Better-Auth with User Background Collection
+# Tasks: Backend API for Physical AI Textbook Platform
 
-**Input**: Design documents from `/specs/001-auth-background-collection/`
+**Input**: Design documents from `/specs/001-backend-api/`
 **Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, contracts/
 
 **Tests**: The feature specification did not explicitly request tests, so test tasks are not included in this implementation.
@@ -15,18 +15,17 @@
 
 ## Path Conventions
 
-- **Web app**: `backend/src/`, `frontend/src/`
+- **Web app**: `backend/src/`
 - Paths shown below follow the web app structure mentioned in the plan
 
 ## Phase 1: Setup (Shared Infrastructure)
 
 **Purpose**: Project initialization and basic structure
 
-- [x] T001 Create project structure per implementation plan with backend and frontend directories
-- [x] T002 [P] Initialize backend Node.js project with package.json and dependencies (better-auth, hono, pg, dotenv, tsx)
-- [x] T003 [P] Initialize frontend Docusaurus project with proper configuration
-- [x] T004 Setup TypeScript configuration for both backend and frontend
-- [x] T005 Create environment configuration files (.env.example) for both backend and frontend
+- [x] T001 Create project structure per implementation plan with backend directory
+- [x] T002 [P] Initialize backend Python project with pyproject.toml and dependencies (fastapi, sqlalchemy, qdrant-client, cohere, etc.)
+- [x] T004 Setup Python configuration for backend
+- [x] T005 Create environment configuration files (.env.example) for backend
 
 ---
 
@@ -36,95 +35,94 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [x] T006 [P] Setup Neon Postgres database connection in backend/src/db.ts
-- [x] T007 [P] Configure Better-Auth with custom fields (softwareBackground, hardwareBackground) in backend/src/auth.ts
-- [x] T008 [P] Setup Hono server with CORS for frontend integration in backend/src/server.ts
-- [x] T009 Create User model/entity with background fields in backend/src/models/user.ts
-- [x] T010 Setup database migration for custom background fields in backend/migrations/001_user_background.sql
-- [x] T011 Configure rate limiting middleware in backend/src/middleware/rate-limit.ts
-- [x] T012 Initialize authentication context in frontend/src/contexts/AuthContext.tsx
+- [x] T006 [P] Setup Neon Postgres database connection in backend/src/database/connection.py
+- [x] T008 [P] Setup FastAPI server with CORS for integration in backend/src/api/main.py
+- [x] T009 Create data models for user queries and responses in backend/src/models/
+- [x] T010 Setup database migration for query/response tables in backend/migrations/
+- [x] T011 Configure rate limiting middleware in backend/src/middleware/rate_limit.py
+- [x] T012 Initialize settings configuration in backend/src/config/settings.py
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
 ---
 
-## Phase 3: User Story 1 - Create Account with Background Information (Priority: P1) 🎯 MVP
+## Phase 3: User Story 1 - Query Textbook Content via RAG Chatbot (Priority: P1) 🎯 MVP
 
-**Goal**: Enable new users to create an account with their software and hardware background information, storing this data for personalized content.
+**Goal**: Enable users to ask questions about textbook content and receive relevant responses based on the RAG system.
 
-**Independent Test**: A new user can visit the signup page, provide name, email, password, and select their software and hardware background, then successfully create an account with all provided information stored in the database.
+**Independent Test**: A user can enter a question about the textbook content, submit it to the RAG chatbot, and receive a relevant response based on the textbook material.
 
 ### Implementation for User Story 1
 
-- [x] T013 [P] [US1] Create signup page UI in frontend/src/pages/signup.tsx with form fields
-- [x] T014 [P] [US1] Add software background dropdown with required options in signup page
-- [x] T015 [P] [US1] Add hardware background dropdown with required options in signup page
-- [x] T016 [US1] Integrate signup form with Better-Auth API in frontend/src/services/auth.ts
-- [x] T017 [US1] Add form validation for all fields (email format, password strength, required backgrounds)
-- [x] T018 [US1] Implement signup API endpoint in backend/src/api/auth.ts
-- [x] T019 [US1] Validate custom background fields against allowed enum values in backend/src/validation/user.ts
-- [x] T020 [US1] Test successful signup with background collection
+- [x] T013 [P] [US1] Create RAG chatbot endpoint structure in backend/src/api/v1/chat.py
+- [x] T014 [P] [US1] Integrate Qdrant vector store for content retrieval in backend/src/services/vector_store_service.py
+- [x] T015 [P] [US1] Integrate Cohere for embedding generation in backend/src/services/embedding_service.py
+- [x] T016 [US1] Implement RAG logic combining vector retrieval and response generation in backend/src/services/rag_service.py
+- [x] T017 [US1] Add input validation for user queries in backend/src/api/v1/chat.py
+- [x] T018 [US1] Implement RAG chatbot endpoint with vector retrieval and response generation in backend/src/api/v1/chat.py
+- [x] T019 [US1] Validate user query parameters in backend/src/validation/query.py
+- [x] T020 [US1] Test successful RAG responses to user queries
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
 ---
 
-## Phase 4: User Story 2 - Sign In to Access Personalized Content (Priority: P1)
+## Phase 4: User Story 2 - Personalize Content Based on Preferences (Priority: P1)
 
-**Goal**: Enable existing users to sign in to access their personalized content based on their software and hardware background information.
+**Goal**: Enable users to receive content that's personalized based on their software and hardware background preferences.
 
-**Independent Test**: An existing user can visit the sign in page, enter their email and password, and successfully authenticate to access personalized content based on their background information.
+**Independent Test**: A user can specify their software and hardware background preferences, request content, and receive content that's adapted to their preferences.
 
 ### Implementation for User Story 2
 
-- [x] T021 [US2] Create signin page UI in frontend/src/pages/signin.tsx with email/password form
-- [x] T022 [US2] Add "Remember me" checkbox functionality to signin page
-- [x] T023 [US2] Implement "Forgot password" link functionality
-- [x] T024 [US2] Integrate signin form with Better-Auth API in frontend/src/services/auth.ts
-- [x] T025 [US2] Implement sign in API endpoint in backend/src/api/auth.ts
-- [x] T026 [US2] Ensure user background information is accessible in session data
-- [x] T027 [US2] Test successful sign in with session persistence
-- [x] T028 [US2] Test that background data is available after sign in
+- [x] T021 [US2] Create personalization endpoint structure in backend/src/api/v1/personalization.py
+- [x] T022 [US2] Create personalization rules based on user preferences in backend/src/services/personalization_service.py
+- [x] T023 [US2] Implement content adaptation based on software background in personalization service
+- [x] T024 [US2] Integrate personalization service with personalization endpoint in backend/src/api/v1/personalization.py
+- [x] T025 [US2] Implement content adaptation based on hardware availability in personalization service
+- [x] T026 [US2] Add user preference parameters to personalization endpoint
+- [x] T027 [US2] Test successful content personalization based on user preferences
+- [x] T028 [US2] Test that content adapts appropriately to different user backgrounds
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
 
 ---
 
-## Phase 5: User Story 3 - Update Personal Background Information (Priority: P2)
+## Phase 5: User Story 3 - Translate Content to Urdu (Priority: P2)
 
-**Goal**: Allow registered users to update their software and hardware background information so their content personalization remains accurate.
+**Goal**: Allow users to translate textbook content to Urdu so they can understand the material in their preferred language.
 
-**Independent Test**: A logged-in user can navigate to their profile, update their background information, save the changes, and verify that their background information has been updated in the system.
+**Independent Test**: A user can submit English textbook content for translation, request Urdu translation, and receive accurate Urdu content preserving technical terminology.
 
 ### Implementation for User Story 3
 
-- [x] T029 [P] [US3] Create profile page UI in frontend/src/pages/profile.tsx showing user data
-- [x] T030 [US3] Add form to update background information on profile page
-- [x] T031 [US3] Integrate profile update with Better-Auth API in frontend/src/services/auth.ts
-- [x] T032 [US3] Implement profile update API endpoint in backend/src/api/auth.ts
-- [x] T033 [US3] Ensure background updates are validated against allowed enum values
-- [x] T034 [US3] Add functionality to change password on profile page
-- [x] T035 [US3] Test successful background information updates
+- [x] T029 [P] [US3] Create translation service structure in backend/src/services/translation_service.py
+- [x] T030 [US3] Integrate translation API (initially for Urdu) in translation service
+- [x] T031 [US3] Create translation endpoint structure in backend/src/api/v1/translation.py
+- [x] T032 [US3] Integrate translation service with translation endpoint in backend/src/api/v1/translation.py
+- [x] T033 [US3] Ensure technical terminology is preserved in translations
+- [x] T034 [US3] Add content and target language parameters to translation endpoint
+- [x] T035 [US3] Test successful content translation to Urdu
 
 **Checkpoint**: All user stories should now be independently functional
 
 ---
 
-## Phase 6: User Story 4 - View Personalized Content (Priority: P2)
+## Phase 6: User Story 4 - Access System Logs (Priority: P2)
 
-**Goal**: Display content that's personalized based on the user's software and hardware background.
+**Goal**: Allow administrators to access system logs to monitor platform usage and troubleshoot issues.
 
-**Independent Test**: A logged-in user sees content that's appropriate for their software and hardware background levels (e.g., beginners see basic Python explanations, users with no GPU see cloud alternatives instead of GPU-intensive examples).
+**Independent Test**: An administrator can request system logs, apply filters like date range or log level, and see structured log entries with appropriate pagination.
 
 ### Implementation for User Story 4
 
-- [x] T036 [P] [US4] Implement ProtectedRoute component in frontend/src/components/ProtectedRoute.tsx
-- [x] T037 [US4] Create content personalization logic based on user backgrounds
-- [x] T038 [US4] Implement display logic for different content based on software background
-- [x] T039 [US4] Implement display logic for different content based on hardware availability
-- [x] T040 [US4] Add warning badges for users with no GPU accessing GPU-intensive content
-- [x] T041 [US4] Test that content displays appropriately based on user's background
-- [x] T042 [US4] Implement logout functionality in frontend/src/components/LogoutButton.tsx
+- [x] T036 [P] [US4] Implement logging system for API endpoints in backend/src/config/logging_config.py
+- [x] T037 [US4] Create logs endpoint structure in backend/src/api/v1/logs.py
+- [x] T038 [US4] Implement log filtering by level, date, and search terms
+- [x] T039 [US4] Implement pagination for log retrieval
+- [x] T040 [US4] Add log analysis capabilities to logs endpoint
+- [x] T041 [US4] Test that logs are properly captured and retrievable
+- [x] T042 [US4] Test filtering and pagination of log entries
 
 **Checkpoint**: All user stories should now be fully functional together
 
@@ -134,12 +132,12 @@
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [x] T043 [P] Add documentation updates in docs/auth-implementation.md
-- [x] T044 [P] Create README.md with setup instructions for auth system
-- [x] T045 Configure security headers for auth endpoints in backend/src/middleware/security.ts
-- [x] T046 Add loading spinners during auth checks in frontend components
-- [x] T047 Add error handling and user-friendly messages for auth operations
-- [x] T048 Add unit tests for authentication services
+- [x] T043 [P] Add documentation updates in docs/api-implementation.md
+- [x] T044 [P] Create README.md with setup instructions for backend API
+- [x] T045 Configure security headers and input validation for all endpoints in backend/src/middleware/security.py
+- [x] T046 Add loading indicators during long-running API operations
+- [x] T047 Add error handling and user-friendly messages for API operations
+- [x] T048 Add unit tests for backend services
 - [x] T049 Run final validation using quickstart.md to ensure all user stories work
 
 ---
@@ -160,7 +158,7 @@
 - **User Story 1 (P1)**: Can start after Foundational (Phase 2) - No dependencies on other stories
 - **User Story 2 (P1)**: Can start after Foundational (Phase 2) - May integrate with US1 but should be independently testable
 - **User Story 3 (P2)**: Can start after Foundational (Phase 2) - May integrate with US1/US2 but should be independently testable
-- **User Story 4 (P2)**: Can start after Foundational (Phase 2) - Depends on authentication working (US1/US2)
+- **User Story 4 (P2)**: Can start after Foundational (Phase 2) - Independent of other stories
 
 ### Within Each User Story
 
@@ -179,10 +177,10 @@
 ## Parallel Example: User Story 1
 
 ```bash
-# Launch all UI components for User Story 1 together:
-Task: "Create signup page UI in frontend/src/pages/signup.tsx with form fields"
-Task: "Add software background dropdown with required options in signup page"
-Task: "Add hardware background dropdown with required options in signup page"
+# Launch all components for User Story 1 together:
+Task: "Create RAG chatbot endpoint structure in backend/src/api/v1/chat.py"
+Task: "Integrate Qdrant vector store for content retrieval in backend/src/services/vector_store_service.py"
+Task: "Integrate Cohere for embedding generation in backend/src/services/embedding_service.py"
 ```
 
 ---

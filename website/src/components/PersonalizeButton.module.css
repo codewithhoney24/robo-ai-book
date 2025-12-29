@@ -1,0 +1,261 @@
+.personalize-dropdown {
+  position: relative;
+  display: inline-block;
+  z-index: 9999;
+  pointer-events: auto;
+}
+
+.personalize-button {
+  background-color: #00FFFF;
+  color: #000;
+  padding: 10px 20px;
+  border: 1px solid #00FFFF;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+  z-index: 10000;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: auto;
+}
+
+.personalize-button:hover {
+  background-color: #ccffff;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+}
+
+.personalize-button:active {
+  transform: scale(0.98);
+}
+
+.personalize-button.locked {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.6;
+  filter: grayscale(30%);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 350px;
+  max-width: 450px;
+  background-color: #0f172a;
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+  z-index: 10001;
+  max-height: 500px;
+  overflow-y: auto;
+  animation: slideDown 0.2s ease-out;
+  pointer-events: auto;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.category-list {
+  list-style: none;
+  padding: 8px;
+  margin: 0;
+}
+
+.category-item {
+  margin-bottom: 4px;
+}
+
+.category-item:last-child {
+  margin-bottom: 0;
+}
+
+.category-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px 16px;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  border-radius: 6px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  color: #a5f3fc;
+  transition: all 0.2s ease;
+  position: relative;
+  z-index: 10002;
+}
+
+.category-button:hover {
+  background-color: rgba(0, 255, 255, 0.1);
+  border-color: #00FFFF;
+  color: #ffffff;
+}
+
+.category-button.expanded {
+  background-color: rgba(0, 255, 255, 0.2);
+  border-color: #00FFFF;
+  color: #ffffff;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.category-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.arrow {
+  font-size: 12px;
+  transition: transform 0.2s ease;
+}
+
+.sub-options {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background-color: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  border-top: none;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  overflow: hidden;
+  animation: expandDown 0.2s ease-out;
+  position: relative;
+  z-index: 10003;
+}
+
+@keyframes expandDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 500px;
+  }
+}
+
+.sub-options li {
+  border-bottom: 1px solid #8c8e91;
+}
+
+.sub-options li:last-child {
+  border-bottom: none;
+}
+
+.option-button {
+  display: block;
+  width: 100%;
+  padding: 10px 20px 10px 40px;
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #a5f3fc;
+  transition: all 0.15s ease;
+  position: relative;
+  z-index: 10004;
+}
+
+.option-button::before {
+  content: '•';
+  position: absolute;
+  left: 24px;
+  color: #00FFFF;
+  font-size: 18px;
+  z-index: 10005;
+}
+
+.option-button:hover {
+  background-color: rgba(0, 255, 255, 0.1);
+  color: #ffffff;
+  padding-left: 45px;
+}
+
+.option-button:hover::before {
+  color: #ffffff;
+  left: 28px;
+}
+
+.option-button:active {
+  background-color: rgba(0, 255, 255, 0.2);
+}
+
+/* Scrollbar styling */
+.dropdown-menu::-webkit-scrollbar {
+  width: 8px;
+}
+
+.dropdown-menu::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.5);
+  border-radius: 4px;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 255, 255, 0.5);
+}
+
+/* Debug info styling */
+.debug-info {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 10002;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  max-width: 300px;
+  margin-top: 5px;
+  pointer-events: none;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.debug-info > div:first-child {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #93c5fd;
+}
+
+.debug-info div {
+  margin-bottom: 3px;
+  word-break: break-word;
+}
+
+/* Ensure proper layering of all elements */
+.personalize-button,
+.dropdown-menu,
+.category-button,
+.sub-options,
+.option-button {
+  position: relative;
+  pointer-events: auto;
+}

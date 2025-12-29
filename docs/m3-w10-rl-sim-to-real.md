@@ -1,3 +1,10 @@
+---
+difficulty: Intermediate
+category: NVIDIA-Isaac
+hardware_focus: [RTX-GPU, Jetson-Orin]
+software_focus: [Python, Ubuntu]
+---
+
 # Module 3: The AI-Robot Brain (NVIDIA Isaac™)
 
 ## Week 10: Reinforcement Learning for Control and Sim-to-Real Transfer

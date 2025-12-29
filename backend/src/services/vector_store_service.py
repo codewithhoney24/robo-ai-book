@@ -17,6 +17,12 @@ class VectorStoreService:
         self.qdrant_client = db_config.get_qdrant_client()
         self.collection_name = settings.qdrant_collection_name
 
+        # Log the status of the Qdrant client
+        if self.qdrant_client is None:
+            db_logger.warning("Qdrant client is not available - vector store functionality will be disabled")
+        else:
+            db_logger.info("Qdrant client initialized successfully")
+
     def search(
         self,
         query_embedding: List[float],
@@ -29,6 +35,11 @@ class VectorStoreService:
         Search for relevant documents based on the query embedding
         If selected_text is provided, prioritize contexts that are similar to the selected text
         """
+        # Check if Qdrant client is available
+        if self.qdrant_client is None:
+            db_logger.warning("Qdrant client not available, returning empty results")
+            return []
+
         try:
             # Build search filters if provided
             search_filter = None
@@ -65,7 +76,7 @@ class VectorStoreService:
                 )
                 retrieved_contexts.append(context)
 
-            # If selected text is provided, prioritize or add contexts that are similar to the selected text
+            # If selected_text is provided, prioritize or add contexts that are similar to the selected text
             if selected_text:
                 retrieved_contexts = self._prioritize_contexts_for_selected_text(
                     retrieved_contexts, selected_text, query_text

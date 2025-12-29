@@ -30,13 +30,13 @@
   color: #00FFFF !important;
 }
 
-.navbar__item, 
+.navbar__item,
 .navbar__link {
   color: #00FFFF !important;
   font-weight: bold;
 }
 
-.navbar__item:hover, 
+.navbar__item:hover,
 .navbar__link:hover {
   color: #ffffff !important;
   text-shadow: 0 0 10px #00FFFF;
@@ -62,7 +62,7 @@
 }
 
 .menu__link--active {
-  color: #ffffff !important; 
+  color: #ffffff !important;
   background-color: rgba(0, 255, 255, 0.2) !important;
   border-right: 3px solid #00FFFF;
 }
@@ -249,4 +249,54 @@ body, p, li, ul, ol, span, td, th, div[class^='docItemContainer'] {
 /* Active Link White rahay */
 .table-of-contents__link--active {
     color: #ffffff !important;
+}
+
+
+/* Navbar positioning fix */
+.navbar {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+/* Main content should account for fixed navbar */
+.main-wrapper {
+  margin-top: var(--ifm-navbar-height, 60px) !important;
+  flex: 1 0 auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Sticky footer implementation */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#__docusaurus {
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 100vh !important;
+  height: auto !important;
+}
+
+/* Footer styling to keep it at the bottom */
+.footer {
+  width: 100%;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.footer__bottom {
+  text-align: center;
+}
+
+/* Ensure content wrapper takes available space */
+.container-wrapper {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
 }

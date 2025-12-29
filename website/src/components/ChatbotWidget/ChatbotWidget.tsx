@@ -1,5 +1,7 @@
 // ChatbotWidget.tsx
 import React, { useState, useRef, useEffect } from 'react';
+import { usePersonalization } from '../../contexts/PersonalizationContext';
+import { API_CONFIG } from '../../config/api';
 import styles from './ChatbotWidget.module.css';
 
 // 1. Message ki type define ki (TypeScript ke liye) - UPDATED
@@ -11,8 +13,9 @@ interface Message {
 }
 
 const ChatbotWidget: React.FC = () => {
+  const { personalizationData, updatePersonalization } = usePersonalization();
   const [isOpen, setIsOpen] = useState(false);
-  
+
   // 2. Nayi States Add ki hain (Logic ke liye)
   const [messages, setMessages] = useState<Message[]>([]); // Chat history
   const [input, setInput] = useState(''); // Input box ka text
@@ -23,8 +26,37 @@ const ChatbotWidget: React.FC = () => {
   const [urduMode, setUrduMode] = useState(false);
   const [isTranslating, setIsTranslating] = useState(false);
 
+  // ✅ NEW: Text Selection States
+  const [selectedText, setSelectedText] = useState<string | null>(null);
+
   const toggleChat = () => {
     setIsOpen(!isOpen);
+  };
+
+  // ✅ NEW: Function to handle text selection
+  useEffect(() => {
+    const handleTextSelection = () => {
+      const selection = window.getSelection();
+      if (selection && selection.toString().trim() !== '') {
+        const selectedText = selection.toString().trim();
+        if (selectedText.length > 0 && selectedText.length < 500) { // Limit selection length
+          setSelectedText(selectedText);
+        }
+      }
+    };
+
+    document.addEventListener('mouseup', handleTextSelection);
+    return () => {
+      document.removeEventListener('mouseup', handleTextSelection);
+    };
+  }, []);
+
+  // ✅ NEW: Function to send selected text to chat
+  const sendSelectedTextToChat = () => {
+    if (selectedText) {
+      setInput(`Translate and explain this text: "${selectedText}"`);
+      setSelectedText(null); // Clear the selected text after adding to input
+    }
   };
 
   // Auto-scroll logic: Jab naya msg aaye to neeche scroll karo
@@ -35,10 +67,10 @@ const ChatbotWidget: React.FC = () => {
   // ✅ NEW: Translation Function
   const translateMessage = async (text: string): Promise<string> => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/v1/translate', {
+      const response = await fetch(`${API_CONFIG.BASE_URL}/v1/translate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           text: text,
           source_lang: 'en',
           target_lang: 'ur',
@@ -47,7 +79,7 @@ const ChatbotWidget: React.FC = () => {
       });
 
       if (!response.ok) throw new Error('Translation failed');
-      
+
       const data = await response.json();
       return data.translated_text;
     } catch (error) {
@@ -60,7 +92,7 @@ const ChatbotWidget: React.FC = () => {
   const toggleUrduMode = async () => {
     if (!urduMode && messages.length > 0) {
       setIsTranslating(true);
-      
+
       try {
         // Translate all messages
         const translatedMessages = await Promise.all(
@@ -72,7 +104,7 @@ const ChatbotWidget: React.FC = () => {
             return msg;
           })
         );
-        
+
         setMessages(translatedMessages);
       } catch (error) {
         console.error('Batch translation error:', error);
@@ -80,7 +112,7 @@ const ChatbotWidget: React.FC = () => {
         setIsTranslating(false);
       }
     }
-    
+
     setUrduMode(!urduMode);
   };
 
@@ -89,8 +121,8 @@ const ChatbotWidget: React.FC = () => {
     if (!input.trim()) return;
 
     // User ka message add kiya - UPDATED with ID
-    const userMessage: Message = { 
-      role: 'user', 
+    const userMessage: Message = {
+      role: 'user',
       content: input,
       id: Date.now(),
       urdu: undefined
@@ -101,20 +133,21 @@ const ChatbotWidget: React.FC = () => {
 
     try {
       // Backend Call (Jo humne pehle test kiya tha)
-      const response = await fetch('http://127.0.0.1:8000/api/v1/chat', {
+      const response = await fetch(`${API_CONFIG.BASE_URL}/v1/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           query: userMessage.content,
-          chat_history: [] // Filhal simple rakha hai
+          chat_history: [], // Filhal simple rakha hai
+          personalization: personalizationData // Include personalization data
         }),
       });
 
       const data = await response.json();
 
       // Bot ka jawab add kiya - UPDATED with ID
-      const botMessage: Message = { 
-        role: 'bot', 
+      const botMessage: Message = {
+        role: 'bot',
         content: data.content,
         id: Date.now() + 1,
         urdu: undefined
@@ -124,9 +157,9 @@ const ChatbotWidget: React.FC = () => {
       // ✅ NEW: If Urdu mode is ON, translate immediately
       if (urduMode) {
         const urduText = await translateMessage(botMessage.content);
-        setMessages((prev) => 
-          prev.map(msg => 
-            msg.id === botMessage.id 
+        setMessages((prev) =>
+          prev.map(msg =>
+            msg.id === botMessage.id
               ? { ...msg, urdu: urduText }
               : msg
           )
@@ -135,8 +168,8 @@ const ChatbotWidget: React.FC = () => {
 
     } catch (error) {
       console.error("Error:", error);
-      const errorMessage: Message = { 
-        role: 'bot', 
+      const errorMessage: Message = {
+        role: 'bot',
         content: "⚠️ Server Error: Backend se connect nahi ho raha.",
         id: Date.now() + 1
       };
@@ -149,15 +182,15 @@ const ChatbotWidget: React.FC = () => {
   return (
     <div className={styles.chatbotContainer}>
       {/* Robot Icon Button */}
-      <div 
-        className={styles.robotIcon} 
+      <div
+        className={styles.robotIcon}
         onClick={toggleChat}
         aria-label="Open Chatbot"
         role="button"
         tabIndex={0}
       >
         {/* Agar aapke CSS mein icon image nahi hai to yahan emoji daal sakte hain */}
-        🤖 
+        🤖
       </div>
 
       {isOpen && (
@@ -170,8 +203,8 @@ const ChatbotWidget: React.FC = () => {
             </div>
             <div className={styles.headerControls}>
               {/* ✅ NEW: Urdu Toggle Button */}
-              <button 
-                className={styles.controlButton} 
+              <button
+                className={styles.controlButton}
                 onClick={toggleUrduMode}
                 disabled={isTranslating}
                 title={urduMode ? "Switch to English" : "Switch to Urdu"}
@@ -189,7 +222,7 @@ const ChatbotWidget: React.FC = () => {
 
           {/* 4. Body section (Yahan bari changing ki hai) */}
           <div className={styles.chatBody}>
-            
+
             {/* Logic: Agar messages hain to Chat dikhao, warna Welcome Screen dikhao */}
             {messages.length === 0 ? (
               // --- WELCOME SCREEN (Purana Code) ---
@@ -210,24 +243,24 @@ const ChatbotWidget: React.FC = () => {
                     <div className={msg.role === 'user' ? styles.userBubble : styles.botBubble}>
                       {/* ✅ NEW: Urdu Text Display Logic */}
                       {urduMode && msg.urdu ? (
-                        <div 
-                          dir="rtl" 
-                          style={{ 
+                        <div
+                          dir="rtl"
+                          style={{
                             fontFamily: 'Noto Nastaliq Urdu, Jameel Noori Nastaleeq, Arial',
                             fontSize: '16px',
                             lineHeight: '1.8'
-                            
+
                           }}
 
-                          
+
                         >
                           {msg.urdu}
                         </div>
                       ) : (
                         <div>{msg.content}</div>
                       )}
-                      
-                      
+
+
                       {/* ✅ NEW: Translation Loading Indicator */}
                       {urduMode && !msg.urdu && msg.content && (
                         <div style={{
@@ -248,21 +281,31 @@ const ChatbotWidget: React.FC = () => {
             )}
           </div>
 
-          
+
 
           {/* 5. Footer section (Input Logic connect ki) - UPDATED with Urdu Placeholder */}
           <div className={styles.chatFooter}>
-            <input 
-              type="text" 
-              placeholder={urduMode ? "سوال پوچھیں..." : "Ask about the course..."} 
+            <input
+              type="text"
+              placeholder={urduMode ? "سوال پوچھیں..." : "Ask about the course..."}
               className={styles.footerInput}
               value={input} // State se connect kiya
               onChange={(e) => setInput(e.target.value)} // Typing handle ki
               onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()} // Enter key support
               disabled={loading}
             />
-            <button 
-              className={styles.footerButton} 
+            {selectedText && (
+              <button
+                className={styles.footerButton}
+                onClick={sendSelectedTextToChat}
+                title="Send selected text to chat"
+                style={{ backgroundColor: '#28a745', marginRight: '5px' }}
+              >
+                📝
+              </button>
+            )}
+            <button
+              className={styles.footerButton}
               onClick={handleSendMessage}
               disabled={loading || !input.trim()}
             >
@@ -271,7 +314,7 @@ const ChatbotWidget: React.FC = () => {
           </div>
         </div>
       )}
-      
+
     </div>
   );
 };

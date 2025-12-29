@@ -1,8 +1,0 @@
-{
-  "dialect": "postgresql",
-  "schema": "./backend/src/database/schema.ts",
-  "out": "./backend/migrations",
-  "tablesFilter": [],
-  "strict": true,
-  "verbose": true
-}

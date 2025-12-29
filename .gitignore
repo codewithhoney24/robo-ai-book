@@ -106,3 +106,15 @@ docs/_autosummary/
 .cache-loader
 node_modules/
 build/
+dist/
+coverage/
+.nyc_output/
+.eslintcache
+.prettierignore
+*.min.js
+*.min.css
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+.npm
+.npmrc

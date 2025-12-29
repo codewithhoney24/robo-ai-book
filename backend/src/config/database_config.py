@@ -6,6 +6,7 @@ from contextlib import contextmanager
 import psycopg2
 from qdrant_client import QdrantClient
 from .settings import settings
+from ..utils.db_url_parser import extract_connection_params_from_url
 
 logger = logging.getLogger(__name__)
 
@@ -92,30 +93,66 @@ class DatabaseConfig:
     """Configuration class that provides database connection methods"""
 
     def __init__(self):
-        # Initialize Qdrant client
-        if settings.qdrant_api_key:
-            self.qdrant_client = QdrantClient(
-                url=settings.qdrant_endpoint,
-                api_key=settings.qdrant_api_key,
-                timeout=10
-            )
-        else:
-            # For local Qdrant instance
-            self.qdrant_client = QdrantClient(
-                url=settings.qdrant_client_url,
-                timeout=10
-            )
+        # Initialize Qdrant client lazily - only when needed
+        self._qdrant_client = None
+        self._qdrant_client_initialized = False
 
     def get_qdrant_client(self):
-        """Get Qdrant client instance"""
-        return self.qdrant_client
+        """Get Qdrant client instance - initialize only when first accessed"""
+        if not self._qdrant_client_initialized:
+            if settings.qdrant_api_key and settings.qdrant_endpoint:
+                try:
+                    # For Qdrant Cloud with API key
+                    # Set check_compatibility=False to avoid immediate server connection check
+                    self._qdrant_client = QdrantClient(
+                        url=settings.qdrant_endpoint,
+                        api_key=settings.qdrant_api_key,
+                        timeout=10,
+                        check_compatibility=False  # Skip initial compatibility check
+                    )
+                    logger.info("Qdrant client initialized successfully")
+                except Exception as e:
+                    logger.error(f"Failed to initialize Qdrant client: {str(e)}")
+                    logger.info("Qdrant client set to None - vector store functionality will be unavailable")
+                    self._qdrant_client = None
+            elif settings.qdrant_client_url:
+                try:
+                    # For local Qdrant instance
+                    self._qdrant_client = QdrantClient(
+                        url=settings.qdrant_client_url,
+                        timeout=10,
+                        check_compatibility=False  # Skip initial compatibility check
+                    )
+                    logger.info("Qdrant client initialized successfully")
+                except Exception as e:
+                    logger.error(f"Failed to initialize Qdrant client: {str(e)}")
+                    logger.info("Qdrant client set to None - vector store functionality will be unavailable")
+                    self._qdrant_client = None
+            else:
+                logger.warning("No Qdrant configuration provided - vector store functionality will be unavailable")
+                self._qdrant_client = None
+
+            self._qdrant_client_initialized = True
+
+        return self._qdrant_client
 
     def get_postgres_connection(self):
         """Get Postgres database connection"""
-        return psycopg2.connect(
-            dsn=settings.neon_database_url,
-            connect_timeout=settings.connection_timeout
-        )
+        # Extract connection parameters that need to be passed separately to psycopg2
+        clean_url, connection_params = extract_connection_params_from_url(settings.neon_database_url)
+
+        # Add timeout to the connection parameters
+        connection_params['connect_timeout'] = settings.connection_timeout
+
+        # Prepare connection arguments
+        conn_args = {
+            'dsn': clean_url
+        }
+
+        # Add other connection parameters
+        conn_args.update(connection_params)
+
+        return psycopg2.connect(**conn_args)
 
     @contextmanager
     def get_postgres_cursor(self):

@@ -1,7 +1,6 @@
 {
   "extends": "@docusaurus/tsconfig",
   "compilerOptions": {
-    "baseUrl": ".",
     "target": "ES2020",
     "module": "ESNext",
     "moduleResolution": "Bundler",
@@ -10,10 +9,10 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "strict": true,
-    "ignoreDeprecations": "6.0",
     "forceConsistentCasingInFileNames": true,
+    "ignoreDeprecations": "6.0",
     "paths": {
-      "@site/*": ["./*"],
+      "@site/*": ["./src/*"],
       "@theme/*": ["./src/theme/*"],
       "@components/*": ["./src/components/*"],
       "@css/*": ["./src/css/*"]

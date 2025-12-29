@@ -1,3 +1,10 @@
+---
+difficulty: Intermediate
+category: NVIDIA-Isaac
+hardware_focus: [RTX-GPU, Jetson-Orin]
+software_focus: [Python, Ubuntu]
+---
+
 # Module 3: The AI-Robot Brain (NVIDIA Isaac™)
 
 ## Week 8: NVIDIA Isaac Sim, Photorealistic Simulation, and Synthetic Data Generation

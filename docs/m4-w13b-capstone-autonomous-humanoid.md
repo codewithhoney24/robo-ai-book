@@ -1,3 +1,10 @@
+---
+difficulty: Advanced
+category: VLA-AI
+hardware_focus: [RTX-GPU, Jetson-Orin]
+software_focus: [Python, Ubuntu, ROS2, Isaac-Sim, Nav2]
+---
+
 # Module 4: Vision-Language-Action (VLA)
 
 ## Week 13 (Part B): Capstone Project Requirements and Final Submission Guidelines

@@ -1,6 +1,7 @@
 import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
+import path from 'path';
 
 
 
@@ -14,14 +15,14 @@ const config: Config = {
   url: 'http://localhost:3000',
   baseUrl: '/',
 
-  organizationName: 'your-username',
-  projectName: 'ai-robotics-textbook',
+  organizationName: 'codewithhoney24',
+  projectName: 'robo-ai-book',
 
   onBrokenLinks: 'warn',
 
   i18n: {
     defaultLocale: 'en',
-    locales: ['en', 'ur'],
+    locales: ['en'],
   },
 
   // Naya 'markdown' block yahan add karen
@@ -45,6 +46,7 @@ const config: Config = {
     ],
   ],
   plugins: [
+    './src/plugins/docusaurus-plugin-api-config', // Custom plugin to expose API config
     [
       '@docusaurus/plugin-content-docs',
       {
@@ -63,12 +65,27 @@ const config: Config = {
     ],
   ],
 
+
   themeConfig: {
     image: 'img/docusaurus-social-card.jpg',
     colorMode: {
       defaultMode: 'dark',
       disableSwitch: false,
       respectPrefersColorScheme: true,
+    },
+
+    // Define custom fields to pass environment variables to the client
+    customFields: {
+      // These values will be available in the client-side code
+      REACT_APP_API_BASE_URL: process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000/api',
+    },
+
+    // MDX components configuration
+    mdx: {
+      components: {
+        path: './src/theme/MDXComponents',
+        global: true,
+      },
     },
 
     navbar: {
@@ -84,27 +101,32 @@ const config: Config = {
           position: 'left',
           label: 'Start Learning',
         },
+        //  {
+        //   label: 'SYSTEM ACTIVE',
+        //   position: 'right',
+        //   className: 'header-system-active',
+        //   to: '#',
+        // },
         {
-          label: 'SYSTEM ACTIVE',
-          position: 'right',
-          className: 'header-system-active',
-          to: '#',
-        },
-        {
-          href: 'https://github.com/your-username/ai-robotics-textbook',
+          href: 'https://github.com/codewithhoney24/robo-ai-book',
           label: 'GitHub',
           position: 'right',
-        },
-        {
-          label: 'Login',
-          position: 'right',
-          to: '/auth',
         },
         {
           label: 'Get Started',
           position: 'right',
           className: 'header-get-started',
           to: '/module/module-1/ros2-fundamentals',
+        },
+        {
+          href: '/signup',
+          label: 'Sign Up',
+          position: 'right',
+        },
+        {
+          href: '/signin',
+          label: 'Sign In',
+          position: 'right',
         },
       ],
     },
@@ -131,7 +153,7 @@ const config: Config = {
         {
           title: 'Community',
           items: [
-            { label: 'GitHub Repo', href: 'https://github.com/your-username/ai-robotics-textbook' },
+            { label: 'GitHub Repo', href: 'https://github.com/codewithhoney24/robo-ai-book' },
           ],
         },
       ],
@@ -145,5 +167,4 @@ const config: Config = {
   } satisfies Preset.ThemeConfig,
 };
 
-// Yahan sirf ek hi default export hona chahiye
 export default config;

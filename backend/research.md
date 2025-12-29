@@ -1,75 +1,74 @@
-# Research Findings: Better-Auth Implementation
+# Research Findings: Backend API for Physical AI Textbook Platform
 
 ## Identified Unknowns and Resolutions
 
-### 1. How will the personalization engine access user background data?
+### 1. How will the personalization engine work without user authentication?
 
-**Decision**: The personalization engine will access user background data through the session data provided by Better-Auth.
+**Decision**: The personalization engine will accept user preferences as parameters in API requests or through frontend configuration.
 
-**Rationale**: Better-Auth can be configured to include custom fields in the session data. Since the personalization needs to happen on the frontend for the Docusaurus site, the user's background information will be made available through the authentication context.
+**Rationale**: Without authentication, personalization can still be achieved by allowing users to specify their preferences when making requests or by tracking preferences in client-side storage.
 
-**Implementation**: 
-- Configure Better-Auth to include `softwareBackground` and `hardwareBackground` in session data
-- The frontend can access this data through the authentication context
-- Use this data to conditionally render content based on user background
+**Implementation**:
+- Add user preference parameters to personalization API endpoints
+- Allow frontend to pass user background information (software experience, hardware availability) with requests
+- Implement default personalization for anonymous users
 
 **Alternatives considered**:
-- Direct API call to fetch user profile on each page load (rejected: too many requests, slower)
-- Store in local storage after login (rejected: security concerns, data might get stale)
+- Storing preferences in local storage (implemented: as fallback)
+- Cookie-based preferences (rejected: privacy concerns)
 
-### 2. What specific data validation rules apply to the background fields?
+### 2. What specific data validation rules apply to the personalization parameters?
 
-**Decision**: Background fields will use strict validation with predefined enum values.
+**Decision**: Personalization parameters will use strict validation with predefined enum values.
 
-**Rationale**: The feature spec already defines specific values for both software and hardware backgrounds. Using these predefined values ensures consistency and makes personalization rules easier to implement.
+**Rationale**: Using predefined values ensures consistency and makes personalization rules easier to implement and maintain.
 
 **Implementation**:
 - `softwareBackground`: Must be one of ["beginner", "python_intermediate", "ros2_developer", "ai_robotics_expert"]
 - `hardwareBackground`: Must be one of ["no_gpu", "rtx_laptop", "rtx_workstation", "jetson_kit", "cloud"]
-- Frontend will show dropdowns with these values only
 - Backend will validate and reject any other values
+- Default to "beginner" and "no_gpu" if not specified
 
 **Alternatives considered**:
 - Free text field with validation (rejected: would make personalization difficult)
 - Numeric scale (rejected: doesn't capture the required specific categories)
 
-### 3. What are the performance requirements for auth operations?
+### 3. What are the performance requirements for RAG operations?
 
-**Decision**: Auth operations must complete within 500ms (p95 percentile) with support for 1000 concurrent users.
+**Decision**: RAG operations must complete within 2000ms (p95 percentile) with support for 1000 concurrent users.
 
-**Rationale**: This requirement is consistent with the success criteria from the feature spec which states "System supports at least 1,000 concurrent users without authentication performance degradation". The 500ms threshold matches the gates evaluation in the implementation plan.
+**Rationale**: This requirement ensures a responsive user experience while handling the complexity of RAG operations. The 2s threshold accounts for API latency and processing time.
 
 **Implementation**:
-- Use Neon Postgres connection pooling
-- Implement caching for frequently accessed user data
-- Optimize database queries
-- Consider CDN for static auth assets if needed
+- Use connection pooling for database operations
+- Implement caching for frequently accessed content
+- Optimize embedding generation and retrieval
 - Monitor performance metrics during testing
 
 **Alternatives considered**:
-- Higher performance threshold (rejected: not necessary for auth system)
-- Different concurrent user count (rejected: 1000 based on spec requirement)
+- Higher performance threshold (rejected: too slow for good UX)
+- Different concurrent user count (rejected: 1000 based on scalability requirements)
 
 ## Additional Research Findings
 
-### Better-Auth Custom Fields Implementation
+### RAG Implementation Approach
 
-**Decision**: Use Better-Auth's user schema extension feature to add custom fields.
+**Decision**: Use Cohere embeddings with Qdrant vector store for efficient content retrieval.
 
-**Rationale**: Better-Auth provides a clean way to extend user schema with custom fields through its configuration system.
+**Rationale**: This combination provides good performance and accuracy for retrieving relevant textbook content based on user queries.
 
 **Implementation**:
-- Use `user.modelConfig` to define additional fields
-- Set `required: true` for background fields
-- Define appropriate data types
+- Use Cohere to generate embeddings for textbook content
+- Store embeddings in Qdrant vector store
+- Implement similarity search for context retrieval
 
 ### Security Considerations
 
-**Decision**: Implement bcrypt password hashing, HTTP-only cookies, and rate limiting as specified in the feature requirements.
+**Decision**: Implement API key validation, rate limiting, and input validation as specified in the feature requirements.
 
-**Rationale**: These are standard security practices for authentication systems.
+**Rationale**: These are standard security practices for API services that help protect against abuse and ensure data integrity.
 
 **Implementation**:
-- Use Better-Auth's built-in bcrypt hashing (10 rounds) 
-- Configure HTTP-only cookies for session management
-- Implement rate limiting at the API level (5 signups, 10 logins per hour per IP)
+- Validate API keys for protected endpoints
+- Implement rate limiting for all endpoints
+- Use Pydantic models for input validation

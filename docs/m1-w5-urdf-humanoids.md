@@ -1,275 +1,194 @@
-# Module 1: The Robotic Nervous System (ROS 2)
+---
+title: "Module 2: URDF & Simulation – Robots ka digital dhancha (Unified Robot Description Format) banana aur simulation mein sensors active karna"
+sidebar_label: "Module 2: URDF & Simulation"
+description: "Creating robot digital structure with URDF and activating sensors in simulation"
+---
 
-## Week 5: Understanding URDF, Launch Files, and Parameter Management
+# Module 2: URDF & Simulation
 
-### 1. Introduction to URDF (Unified Robot Description Format)
+## Introduction to URDF
 
-URDF (Unified Robot Description Format) ek XML-based file format hai jo ROS mein robots ki mechanical structure, kinematics, aur visual properties ko describe karne ke liye use hota hai. Ismein links (robot ke rigid parts) aur joints (jo links ko connect karte hain) ki definition shamil hoti hai. URDF ka istemal simulation (Gazebo), visualization (RViz), aur motion planning (MoveIt!) mein hota hai.
+URDF (Unified Robot Description Format) is an XML format used to describe robot models in ROS. It defines the physical and visual properties of a robot, including links, joints, and sensors.
 
-**Technical Content:**
-- URDF XML structure: `<robot>`, `<link>`, `<joint>` tags.
-- Link properties: `<visual>`, `<collision>`, `<inertial>` elements.
-- Joint types: `revolute`, `continuous`, `prismatic`, `fixed`, `floating`, `planar`.
-- Kinematic chains aur tree structure.
+## Basic URDF Structure
 
-**Code Example (XML - Simple URDF Snippet for a Link and Joint):**
+A basic URDF file has the following structure:
+
 ```xml
 <?xml version="1.0"?>
-<robot name="simple_robot">
+<robot name="my_robot">
+  <!-- Links define the physical parts of the robot -->
   <link name="base_link">
     <visual>
       <geometry>
-        <box size="0.6 0.4 0.2" />
+        <cylinder length="0.6" radius="0.2"/>
       </geometry>
-      <material name="blue">
-        <color rgba="0 0 0.8 1" />
-      </material>
     </visual>
     <collision>
       <geometry>
-        <box size="0.6 0.4 0.2" />
+        <cylinder length="0.6" radius="0.2"/>
       </geometry>
     </collision>
     <inertial>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <mass value="10.0"/>
+      <mass value="10"/>
       <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
   </link>
 
-  <joint name="base_to_arm_joint" type="revolute">
+  <!-- Joints connect links -->
+  <joint name="base_to_wheel" type="continuous">
     <parent link="base_link"/>
-    <child link="arm_link"/>
-    <origin xyz="0 0 0.1" rpy="0 0 0"/>
+    <child link="wheel_link"/>
+    <origin xyz="0 0.2 -0.3" rpy="0 0 0"/>
     <axis xyz="0 0 1"/>
-    <limit lower="-1.57" upper="1.57" effort="100" velocity="10"/>
   </joint>
 
-  <link name="arm_link">
+  <link name="wheel_link">
     <visual>
       <geometry>
-        <cylinder radius="0.05" length="0.5" />
+        <cylinder length="0.1" radius="0.1"/>
       </geometry>
-      <material name="red">
-        <color rgba="0.8 0 0 1" />
-      </material>
     </visual>
-    <collision>
-      <geometry>
-        <cylinder radius="0.05" length="0.5" />
-      </geometry>
-    </collision>
-    <inertial>
-      <origin xyz="0 0 0.25" rpy="0 0 0"/>
-      <mass value="1.0"/>
-      <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
-    </inertial>
   </link>
-
-  <material name="blue" />
-  <material name="red" />
-
 </robot>
 ```
 
-**Visual Aid Placeholder:**
+## URDF Components
+
+### Links
+Links represent the rigid parts of the robot. Each link has:
+- Visual properties (how it looks)
+- Collision properties (how it interacts with the environment)
+- Inertial properties (mass, center of mass, inertia tensor)
+
+### Joints
+Joints connect links and define how they can move relative to each other:
+- **Fixed**: No movement allowed
+- **Revolute**: Rotational movement around an axis
+- **Continuous**: Unlimited rotational movement
+- **Prismatic**: Linear sliding movement
+- **Floating**: 6-DOF movement
+- **Planar**: Movement on a plane
+
+## Adding Sensors to URDF
+
+Sensors are represented as special links with sensor plugins:
+
+```xml
+<link name="camera_link">
+  <visual>
+    <geometry>
+      <box size="0.05 0.05 0.05"/>
+    </geometry>
+  </visual>
+</link>
+
+<joint name="camera_joint" type="fixed">
+  <parent link="base_link"/>
+  <child link="camera_link"/>
+  <origin xyz="0.2 0 0.1" rpy="0 0 0"/>
+</joint>
+
+<gazebo reference="camera_link">
+  <sensor type="camera" name="camera1">
+    <update_rate>30</update_rate>
+    <camera name="head">
+      <horizontal_fov>1.3962634</horizontal_fov>
+      <image>
+        <width>800</width>
+        <height>600</height>
+        <format>R8G8B8</format>
+      </image>
+      <clip>
+        <near>0.01</near>
+        <far>100</far>
+      </clip>
+    </camera>
+    <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+      <frame_name>camera_link</frame_name>
+    </plugin>
+  </sensor>
+</gazebo>
 ```
-[Image/Diagram: A simplified robot model rendered from a URDF file in RViz, highlighting links and joints.]
-```
 
-### 2. URDF for Humanoids
+## Common Sensor Types in Simulation
 
-Humanoid robots ke liye URDF files significantly complex hoti hain kyunki unki structure mein kayi degrees of freedom (DoF), multiple limbs, aur intricate joint configurations shamil hoti hain. Humanoid URDF mein balance control, manipulation, aur bipedal locomotion ke liye specific properties aur extensions (jaise `transmission` tags `ros2_control` ke liye) shamil hote hain.
+### Camera Sensors
+- RGB cameras for visual perception
+- Depth cameras for 3D information
+- Stereo cameras for depth estimation
 
-**Technical Content:**
-- `xacro` (XML Macros) ka istemal complex URDF files ko modular aur readable banane ke liye.
-- `transmission` tags: Joints ko hardware interfaces aur controllers se connect karna.
-- Multiple visual aur collision geometries for detailed models.
-- Joint limits aur safety controllers ki definition.
+### LiDAR Sensors
+- 2D LiDAR for planar navigation
+- 3D LiDAR for full 3D mapping
+- Ray-based simulation for accurate measurements
 
-**Code Example (XACRO Snippet for a Humanoid Leg Joint):**
+### IMU Sensors
+- Accelerometer for linear acceleration
+- Gyroscope for angular velocity
+- Magnetometer for orientation relative to magnetic north
+
+## URDF Best Practices
+
+1. **Use consistent naming**: Follow a consistent naming convention for links and joints
+2. **Validate your URDF**: Use tools like `check_urdf` to validate your URDF
+3. **Include inertial properties**: Proper inertial properties are crucial for simulation
+4. **Use Xacro for complex robots**: Xacro allows macros and parameterization
+5. **Consider visualization**: Make sure your robot looks correct in RViz
+
+## Xacro for Complex Robots
+
+Xacro is an XML macro language that allows you to create more maintainable URDF files:
+
 ```xml
 <?xml version="1.0"?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="humanoid_leg">
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="my_robot">
+  <xacro:property name="wheel_radius" value="0.1" />
+  <xacro:property name="wheel_width" value="0.05" />
 
-  <xacro:macro name="leg_segment" params="prefix parent_link">
-    <link name="${prefix}_link">
-      <visual>
-        <geometry>
-          <cylinder radius="0.05" length="0.3" />
-        </geometry>
-        <material name="grey" />
-      </visual>
-      <collision>
-        <geometry>
-          <cylinder radius="0.05" length="0.3" />
-        </geometry>
-      </collision>
-      <inertial>
-        <origin xyz="0 0 0.15" rpy="0 0 0"/>
-        <mass value="0.5"/>
-        <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
-      </inertial>
-    </link>
-
-    <joint name="${parent_link}_to_${prefix}_joint" type="revolute">
-      <parent link="${parent_link}"/>
-      <child link="${prefix}_link"/>
-      <origin xyz="0 0 -0.15" rpy="0 0 0"/> <!-- Adjust origin based on parent link -->
-      <axis xyz="0 1 0"/>
-      <limit lower="${-pi/2}" upper="${pi/2}" effort="50" velocity="5"/>
+  <xacro:macro name="wheel" params="prefix parent xyz">
+    <joint name="${prefix}_wheel_joint" type="continuous">
+      <parent link="${parent}"/>
+      <child link="${prefix}_wheel_link"/>
+      <origin xyz="${xyz}" rpy="0 ${M_PI/2} 0"/>
+      <axis xyz="0 0 1"/>
     </joint>
 
-    <xacro:if value="${ros2_control_enabled}">
-      <transmission name="${prefix}_joint_transmission">
-        <type>transmission_interface/SimpleTransmission</type>
-        <joint name="${parent_link}_to_${prefix}_joint">
-          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-        </joint>
-        <actuator name="${prefix}_motor">
-          <mechanicalReduction>1</mechanicalReduction>
-        </actuator>
-      </transmission>
-    </xacro:if>
+    <link name="${prefix}_wheel_link">
+      <visual>
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+        </geometry>
+      </visual>
+    </link>
   </xacro:macro>
 
-  <!-- Example usage of the macro -->
-  <xacro:property name="pi" value="3.14159265359" />
-  <xacro:arg name="ros2_control_enabled" default="false" />
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="0.5 0.5 0.2"/>
+      </geometry>
+    </visual>
+  </link>
 
-  <link name="torso_link"/> <!-- Assuming a torso link exists -->
-  <xacro:leg_segment prefix="upper_leg_right" parent_link="torso_link" />
-
-  <!-- More leg segments and other parts of the humanoid would follow -->
-
-  <material name="grey">
-    <color rgba="0.7 0.7 0.7 1" />
-  </material>
-
+  <xacro:wheel prefix="front_left" parent="base_link" xyz="0.2 0.2 0"/>
+  <xacro:wheel prefix="front_right" parent="base_link" xyz="0.2 -0.2 0"/>
 </robot>
 ```
 
-**Visual Aid Placeholder:**
-```
-[Image/Diagram: A detailed URDF model of a humanoid robot leg, showing multiple joints and links.]
-```
+## Integrating with Gazebo Simulation
 
-### 3. Launch Files (Orchestrating ROS 2 Components)
+To properly simulate your robot in Gazebo, you need to add Gazebo-specific tags to your URDF:
 
-Launch files XML ya Python scripts hote hain jo ROS 2 nodes aur other executables ko start karne aur manage karne ke liye use hote hain. Yeh ek complex robotic system ke components ko ek saath launch karne, unke parameters set karne, aur remappings configure karne ka ek structured way provide karte hain.
-
-**Technical Content:**
-- `ros2 launch` command ka istemal.
-- Python launch files (recommendation for flexibility): `LaunchDescription`, `Node`, `ExecuteProcess`, `OpaqueFunction`, `DeclareLaunchArgument`.
-- XML launch files: `<node>`, `<param>`, `<remap>`, `<include>`.
-- Conditionals (`IfCondition`, `UnlessCondition`) aur loops launch files mein.
-
-**Code Example (Python - Simple ROS 2 Launch File):**
-```python
-import os
-
-from ament_index_python.packages import get_package_share_directory
-from launch import LaunchDescription
-from launch_ros.actions import Node
-
-def generate_launch_description():
-    # Get the path to your package's share directory
-    my_package_share_dir = get_package_share_directory('my_python_pkg')
-
-    # Define the path to the URDF file (if applicable)
-    # urdf_file = os.path.join(my_package_share_dir, 'urdf', 'my_robot.urdf')
-
-    # Example of a robot_state_publisher node (for URDFs)
-    robot_state_publisher_node = Node(
-        package='robot_state_publisher',
-        executable='robot_state_publisher',
-        name='robot_state_publisher',
-        output='screen',
-        parameters=[{'use_sim_time': True}] # if using simulation
-        # arguments=[urdf_file] # uncomment if you have a URDF file
-    )
-
-    # Example of launching your custom Python agent node
-    python_agent_node = Node(
-        package='my_python_pkg',
-        executable='python_agent_node',
-        name='agent',
-        output='screen',
-        parameters=[{'example_param': 'value'}]
-    )
-
-    return LaunchDescription([
-        robot_state_publisher_node,
-        python_agent_node,
-    ])
+```xml
+<gazebo>
+  <plugin name="diff_drive" filename="libgazebo_ros_diff_drive.so">
+    <left_joint>left_wheel_joint</left_joint>
+    <right_joint>right_wheel_joint</right_joint>
+    <wheel_separation>0.4</wheel_separation>
+    <wheel_diameter>0.2</wheel_diameter>
+  </plugin>
+</gazebo>
 ```
 
-**Visual Aid Placeholder:**
-```
-[Image/Diagram: A sequence diagram showing how a launch file starts multiple ROS 2 nodes and sets up their communication.]
-```
-
-### 4. Parameter Management
-
-Parameters ROS 2 nodes ko configuration values provide karne ka mechanism hain jo runtime par dynamically change kiye ja sakte hain. Yeh flexibility provide karta hai ke aap node behavior ko code compile kiye bagair adjust kar saken.
-
-**Technical Content:**
-- `ros2 param` command-line tool (`list`, `get`, `set`, `dump`).
-- Node parameters ko code mein declare aur access karna.
-- YAML files ka istemal parameters ko load karne ke liye (`ros2 run ... --ros-args --params-file`).
-- `Parameter` class in `rclpy`.
-
-**Code Example (Python - Node with Parameter):**
-```python
-import rclpy
-from rclpy.node import Node
-from rcl_interfaces.msg import SetParametersResult
-
-class ParameterNode(Node):
-
-    def __init__(self):
-        super().__init__('parameter_node')
-        self.declare_parameter('message_prefix', 'ROS 2 says:')
-        self.declare_parameter('publish_frequency', 1.0) # Hz
-
-        self.add_on_set_parameters_callback(self.parameter_callback)
-
-        self.message_prefix = self.get_parameter('message_prefix').get_parameter_value().string_value
-        self.publish_frequency = self.get_parameter('publish_frequency').get_parameter_value().double_value
-
-        self.get_logger().info(f'Node Initialized with prefix: "{self.message_prefix}" and frequency: {self.publish_frequency} Hz')
-
-        # Example timer that uses a parameter
-        self.timer = self.create_timer(1.0 / self.publish_frequency, self.timer_callback)
-
-    def parameter_callback(self, params):
-        for param in params:
-            if param.name == 'message_prefix':
-                self.message_prefix = param.value.string_value
-                self.get_logger().info(f'Parameter 'message_prefix' updated to: "{self.message_prefix}"')
-            elif param.name == 'publish_frequency':
-                self.publish_frequency = param.value.double_value
-                # Recreate timer with new frequency
-                self.destroy_timer(self.timer)
-                self.timer = self.create_timer(1.0 / self.publish_frequency, self.timer_callback)
-                self.get_logger().info(f'Parameter 'publish_frequency' updated to: {self.publish_frequency} Hz')
-        return SetParametersResult(successful=True)
-
-    def timer_callback(self):
-        self.get_logger().info(f'{self.message_prefix} Hello from timer!')
-
-
-def main(args=None):
-    rclpy.init(args=args)
-    param_node = ParameterNode()
-    rclpy.spin(param_node)
-    param_node.destroy_node()
-    rclpy.shutdown()
-
-if __name__ == '__main__':
-    main()
-```
-
-**Hardware Context:**
-- **RTX GPU**: Simulation environments mein robot parameters (e.g., joint stiffness, damping) ko dynamically adjust karne ke liye parameter management ka istemal kiya ja sakta hai, jahan RTX GPU high-fidelity physics simulations ko handle karta hai.
-- **Jetson Orin Nano**: Edge devices par sensors ke calibration parameters ya control loop gains ko update karne ke liye parameter management buhat useful hai, jo robot ki autonomous capabilities ko fine-tune karne mein madad karta hai.
+This completes the setup for simulating your robot with proper kinematics in Gazebo.

@@ -1,3 +1,10 @@
+---
+difficulty: Advanced
+category: Hardware
+hardware_focus: [RTX-GPU, Jetson-Orin]
+software_focus: [Python, Ubuntu]
+---
+
 # Module 4: Vision-Language-Action (VLA)
 
 ## Week 12: Manipulation, Grasping, and Natural Human-Robot Interaction (HRI) Design

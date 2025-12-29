@@ -58,8 +58,8 @@ function Feature({number, icon, title, description, weeks, tech}: FeatureItem) {
       <div className={styles.card}>
         <div className={styles.cardNumber}>{number}</div>
         <div className={styles.cardIcon}>{icon}</div>
-        <Heading as="h3">{title}</Heading>
-        <p>{description}</p>
+        <Heading as="h3" className={styles.cardTitle}>{title}</Heading>
+        <p className={styles.cardDescription}>{description}</p>
         <p className={styles.cardWeeks}>{weeks}</p>
         <p className={styles.cardTech}>{tech}</p>
         <a href={`/docs/module-${number}`} className={styles.featureButton}>Learn More</a>
@@ -86,7 +86,7 @@ export default function HomepageFeatures(): ReactNode {
           {FeatureList.map((props, idx) => (
             <Feature key={idx} {...props} />
           ))}
-       
+
         </div>
       </div>
     </section>

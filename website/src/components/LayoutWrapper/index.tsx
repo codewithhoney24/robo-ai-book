@@ -1,10 +1,6 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 
-interface LayoutWrapperProps {
-  children: ReactNode; // ✅ Explicit type for children
-}
-
-const LayoutWrapper: React.FC<LayoutWrapperProps> = ({ children }) => {
+const LayoutWrapper = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 

@@ -1,3 +1,10 @@
+---
+difficulty: Advanced
+category: VLA-AI
+hardware_focus: [RTX-GPU, Jetson-Orin]
+software_focus: [Python, Ubuntu, OpenAI-SDK]
+---
+
 # Module 4: Vision-Language-Action (VLA)
 
 This module delves into the Vision-Language-Action (VLA) paradigm, where robots interpret multimodal inputs (vision, language) to perform complex actions. We will explore Voice-to-Action using OpenAI Whisper and Cognitive Planning with Large Language Models (LLMs).

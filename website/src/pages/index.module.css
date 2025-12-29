@@ -23,6 +23,12 @@
   padding: 0 1rem;
 }
 
+/* Main content area to ensure proper spacing below hero banner */
+main {
+  margin-top: 2rem;
+  padding: 2rem 0;
+}
+
 /* Top Navbar Buttons */
 .topButtons {
   display: flex;
@@ -69,7 +75,7 @@
   font-weight: 700;
   margin-bottom: 1rem;
   /* 👇 YE MISSING THA, AB ADD KAR DIYA HAI */
-  color: rgb(0, 255, 255) !important; 
+  color: rgb(0, 255, 255) !important;
 }
 
 @media screen and (max-width: 768px) {

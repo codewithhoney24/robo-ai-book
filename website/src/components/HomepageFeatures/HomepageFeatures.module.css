@@ -2,6 +2,9 @@
   padding: 60px 20px;
   text-align: center;
   width: 100%;
+  display: block;
+  visibility: visible;
+  opacity: 1;
 }
 
 .features {
@@ -25,18 +28,27 @@
 .card:hover {
   transform: translateY(-8px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  
+
 }
 
 .cardNumber {
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 8px;
+  color: #00FFFF !important; /* Apply neon cyan color to match global theme */
 }
 
 .cardIcon {
   font-size: 2.5rem;
   margin-bottom: 12px;
+}
+
+.cardTitle {
+  color: #00FFFF !important; /* Apply neon cyan color to match global theme */
+}
+
+.cardDescription {
+  color: #e2e8f0 !important; /* Light gray for better readability */
 }
 
 .cardWeeks,
@@ -50,7 +62,7 @@
   display: inline-block;
   margin-top: 12px;
   padding: 8px 16px;
-  background-color: #4f46e5;
+  background-color:  #205756;
   color: #fff;
   border-radius: 8px;
   text-decoration: none;
@@ -58,7 +70,7 @@
   transition: background-color 0.2s;
 }
 .featureButton:hover {
-  background-color: #3730a3;
+  background-color: #133737;
 }
 
 .featureSvg {

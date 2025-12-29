@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
-import HomepageFeatures from '@site/src/components/HomepageFeatures';
+import HomepageFeatures from '@site/src/components/HomepageFeatures/index';
 import Heading from '@theme/Heading';
 
 import styles from './index.module.css';
@@ -19,7 +19,7 @@ function HomepageHeader() {
           <Link to="/module/m0-w1-2-introduction-to-physical-ai" className={styles.navButton}>Start Learning</Link>
           <span className={styles.systemBadge}>SYSTEM ACTIVE</span>
           <Link to="/module/m0-w1-2-introduction-to-physical-ai" className={styles.navButton}>Get Started</Link>
-          
+
         </div>
 
         {/* Hero Title */}
@@ -44,12 +44,12 @@ function HomepageHeader() {
   target="_blank"
   rel="noopener noreferrer"
 >
-    
+
   View on GitHub
 </Link>
 
         </div>
-        
+
       </div>
     </header>
   );
@@ -62,7 +62,7 @@ export default function Home(): ReactNode {
       title={`${siteConfig.title}`}
       description="Physical AI & Humanoid Robotics">
       <HomepageHeader />
-    
+
       <main>
         <HomepageFeatures />
       </main>

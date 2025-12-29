@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+venv/
+.venv/
+
+# Database
+*.db
+*.db3
+
+# Environment variables
+.env*
+!.env.example
+
+# Logs
+*.log
+logs/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Build outputs
+dist/
+build/
+coverage/
+
+# Docker-specific
+Dockerfile*
+.dockerignore

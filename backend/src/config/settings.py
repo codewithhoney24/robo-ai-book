@@ -32,7 +32,6 @@ class Settings(BaseSettings):
     # Security settings
     allowed_hosts: List[str] = ["*"]
     secure_headers_enabled: bool = True
-    max_session_age_hours: int = 24
     rate_limit_requests: int = 100
     rate_limit_window: int = 60  # in seconds
 
@@ -48,7 +47,7 @@ class Settings(BaseSettings):
     response_time_threshold: float = 0.2  # 200ms
     performance_window_size: int = 100
 
-    # Security and authentication settings
+    # Security settings
     secret_key: str = ""
     algorithm: str = "HS256"
     access_token_expire_minutes: int = 30
@@ -56,16 +55,14 @@ class Settings(BaseSettings):
     # Database settings
     database_url: str = "file:./dev.db"  # Default value from .env
 
-    # Authentication settings
-    better_auth_secret: str = ""
-    better_auth_url: str = "http://localhost:3100"
-
     # Other settings
     qwen_cli_path: str = ""
 
-    # GitHub OAuth Configuration
-    github_client_id: str = ""
-    github_client_secret: str = ""
+    # Email settings
+    smtp_server: str = "smtp.gmail.com"
+    smtp_port: int = 587
+    sender_email: str = ""
+    sender_password: str = ""
 
     # Greeting patterns for simple queries
     greeting_patterns: List[str] = ["hi", "hello", "hey", "greetings", "good morning", "good afternoon", "good evening", "good night"]

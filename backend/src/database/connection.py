@@ -10,6 +10,7 @@ import logging
 # Import settings to mask the database URL properly
 from src.config.settings import settings
 from src.database.utils import db_logger
+from src.utils.db_url_parser import clean_database_url_for_asyncpg
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -30,14 +31,17 @@ if not DATABASE_URL or DATABASE_URL.strip() == "":
     logger.warning("NEON_DATABASE_URL not found in environment. Using default connection settings.")
     DATABASE_URL = "postgresql+asyncpg://username:password@localhost:5432/defaultdb"
 
+# Clean the database URL for asyncpg first
+clean_database_url = clean_database_url_for_asyncpg(DATABASE_URL)
+
 # Ensure async driver in DATABASE_URL (use asyncpg for PostgreSQL, aiosqlite for SQLite)
-if DATABASE_URL.startswith("postgresql://") and "+" not in DATABASE_URL.split("://",1)[1]:
-    async_db_url = DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://", 1)
-elif DATABASE_URL.startswith("sqlite://") and "+" not in DATABASE_URL.split("://",1)[1]:
+if clean_database_url.startswith("postgresql://") and "+" not in clean_database_url.split("://",1)[1]:
+    async_db_url = clean_database_url.replace("postgresql://", "postgresql+asyncpg://", 1)
+elif clean_database_url.startswith("sqlite://") and "+" not in clean_database_url.split("://",1)[1]:
     # Handle both sqlite:// and sqlite:/// formats
-    async_db_url = DATABASE_URL.replace("sqlite://", "sqlite+aiosqlite://", 1)
+    async_db_url = clean_database_url.replace("sqlite://", "sqlite+aiosqlite://", 1)
 else:
-    async_db_url = DATABASE_URL
+    async_db_url = clean_database_url
 
 # Create async engine with connection pooling
 engine = create_async_engine(
@@ -108,13 +112,13 @@ def get_connection_metrics() -> dict:
     pool = engine.pool
 
     return {
-        "pool_size": pool.size() if hasattr(pool, 'size') else 'unknown',
+        "pool_size": getattr(pool, 'size', 'unknown') if hasattr(pool, 'size') else 'unknown',
         "pool_timeout": CONNECTION_TIMEOUT,
         "command_timeout": COMMAND_TIMEOUT,
         "max_overflow": getattr(pool, 'max_overflow', 'unknown'),
-        "checked_out": getattr(pool, 'checkedout', 'unknown'),
+        "checked_out": getattr(pool, '_overflow', 'unknown'),
         "recycle": POOL_RECYCLE,
-        "database_url": DATABASE_URL.replace(settings.neon_database_url.split('@')[-1], "***@***")
+        "database_url": async_db_url.replace(async_db_url.split('@')[-1], "***@***")
     }
 
 async def init_db() -> None:
@@ -226,7 +230,7 @@ class ConnectionPoolOptimizer:
             if new_max > self.current_max_connections * 1.1:  # At least 10% increase
                 self.current_max_connections = new_max
                 self.current_min_connections = max(
-                    MIN_CONNECTIONS,
+                    self.base_min_connections,
                     int(self.current_min_connections * self.scale_up_factor)
                 )
 
@@ -248,7 +252,7 @@ class ConnectionPoolOptimizer:
             if new_max < self.current_max_connections * 0.9:  # At least 10% decrease
                 self.current_max_connections = new_max
                 self.current_min_connections = max(
-                    MIN_CONNECTIONS,
+                    self.base_min_connections,
                     int(self.current_min_connections * self.scale_down_factor)
                 )
 
@@ -334,3 +338,7 @@ class DatabaseAvailabilityChecker:
                 "error": str(e),
                 "database_available": False
             }
+
+
+# Create a global instance of the checker
+db_availability_checker = DatabaseAvailabilityChecker()

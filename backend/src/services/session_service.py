@@ -1,110 +1,80 @@
-from datetime import datetime, timedelta
 from typing import Optional
+from datetime import datetime, timedelta
 from ..models.user_session import UserSession
 from ..services.database_service import database_service
-from ..config.logging_config import rag_logger
+from ..config.logging_config import api_logger as service_logger
 
 
 class SessionService:
     """
-    Service for managing user sessions in web interface
+    Service for managing user sessions
     """
-    
+
     def __init__(self):
-        self.db_service = database_service
-    
+        self.session_timeout = timedelta(hours=24)  # Sessions expire after 24 hours of inactivity
+
     def create_session(self, session_id: str, user_agent: Optional[str] = None) -> bool:
         """
         Create a new user session
         """
         try:
-            session = UserSession(
+            # Create a UserSession object with the provided data
+            session_data = UserSession(
                 session_id=session_id,
-                created_at=datetime.utcnow(),
-                last_activity=datetime.utcnow(),
                 user_agent=user_agent
             )
-            
-            result = self.db_service.create_session(session)
-            
+
+            # Use the database service to create the session
+            result = database_service.create_session(session_data)
+
             if result:
-                rag_logger.info(f"Created new session: {session_id}")
-            
+                service_logger.info(f"Created new session: {session_id}")
+            else:
+                service_logger.warning(f"Failed to create session: {session_id}")
+
             return result
         except Exception as e:
-            rag_logger.error(f"Error creating session {session_id}: {str(e)}")
+            service_logger.error(f"Error creating session {session_id}: {str(e)}")
             return False
-    
-    def get_session(self, session_id: str) -> Optional[UserSession]:
+
+    def validate_session(self, session_id: str) -> bool:
         """
-        Get a user session by ID
+        Validate if a session exists and is still active
         """
         try:
-            session = self.db_service.get_session(session_id)
-            
-            if session:
-                rag_logger.debug(f"Retrieved session: {session_id}")
-            else:
-                rag_logger.warning(f"Session not found: {session_id}")
-            
-            return session
+            session = database_service.get_session(session_id)
+
+            if not session:
+                service_logger.info(f"Session not found: {session_id}")
+                return False
+
+            # Check if session has expired based on last activity
+            if datetime.utcnow() - session.last_activity > self.session_timeout:
+                service_logger.info(f"Session expired: {session_id}")
+                return False
+
+            service_logger.info(f"Session validated: {session_id}")
+            return True
         except Exception as e:
-            rag_logger.error(f"Error retrieving session {session_id}: {str(e)}")
-            return None
-    
+            service_logger.error(f"Error validating session {session_id}: {str(e)}")
+            return False
+
     def update_session_activity(self, session_id: str) -> bool:
         """
         Update the last activity timestamp for a session
         """
         try:
-            result = self.db_service.update_session_activity(session_id)
-            
+            result = database_service.update_session_activity(session_id)
+
             if result:
-                rag_logger.debug(f"Updated activity for session: {session_id}")
+                service_logger.info(f"Updated session activity: {session_id}")
             else:
-                rag_logger.warning(f"Failed to update activity for session: {session_id}")
-            
+                service_logger.warning(f"Failed to update session activity: {session_id}")
+
             return result
         except Exception as e:
-            rag_logger.error(f"Error updating session activity {session_id}: {str(e)}")
+            service_logger.error(f"Error updating session activity {session_id}: {str(e)}")
             return False
-    
-    def is_session_expired(self, session: UserSession, hours: int = 24) -> bool:
-        """
-        Check if a session has expired based on last activity
-        Default expiration is 24 hours
-        """
-        try:
-            # Calculate the time threshold
-            threshold = datetime.utcnow() - timedelta(hours=hours)
-            
-            # Compare last activity with threshold
-            if isinstance(session.last_activity, str):
-                # Parse string datetime if needed
-                last_activity = datetime.fromisoformat(session.last_activity.replace('Z', '+00:00'))
-            else:
-                last_activity = session.last_activity
-            
-            return last_activity < threshold
-        except Exception as e:
-            rag_logger.error(f"Error checking session expiry for {session.session_id}: {str(e)}")
-            # If there's an error, assume the session is not expired to be safe
-            return False
-    
-    def validate_session(self, session_id: str) -> bool:
-        """
-        Validate if a session exists and is not expired
-        """
-        session = self.get_session(session_id)
-        
-        if not session:
-            return False
-        
-        if self.is_session_expired(session):
-            rag_logger.info(f"Session {session_id} has expired")
-            return False
-        
-        return True
 
 
 # Global instance

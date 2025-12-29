@@ -1,3 +1,10 @@
+---
+difficulty: Intermediate
+category: Simulation
+hardware_focus: [RTX-GPU, Jetson-Orin]
+software_focus: [Python, Ubuntu]
+---
+
 # Module 2: The Digital Twin (Gazebo & Unity)
 
 ## Week 6: Gazebo Setup, Physics Simulation, URDF/SDF Formats

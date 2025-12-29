@@ -1,3 +1,10 @@
+---
+difficulty: Intermediate
+category: NVIDIA-Isaac
+hardware_focus: [RTX-GPU, Jetson-Orin]
+software_focus: [Python, Ubuntu]
+---
+
 # Module 3: The AI-Robot Brain (NVIDIA Isaac)
 
 This module explores how NVIDIA Isaac platform enables the development and deployment of intelligent robots, focusing on key components like Isaac Sim, synthetic data generation, and Visual Simultaneous Localization and Mapping (VSLAM).

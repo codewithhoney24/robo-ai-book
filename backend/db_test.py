@@ -1,5 +1,38 @@
 import asyncio
 import asyncpg
+from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
+
+def clean_database_url_for_asyncpg(database_url: str) -> str:
+    """
+    Clean a database URL by removing parameters that asyncpg doesn't support directly in the URL.
+
+    Args:
+        database_url: The original database URL string
+
+    Returns:
+        str: A cleaned database URL without problematic parameters
+    """
+    # Parse the database URL to handle special parameters
+    parsed = urlparse(database_url)
+
+    # Extract query parameters
+    query_params = parse_qs(parsed.query)
+
+    # Remove parameters that asyncpg doesn't support directly in the URL
+    params_to_remove = [
+        'channel_binding',  # asyncpg doesn't support channel_binding
+    ]
+
+    for param in params_to_remove:
+        if param in query_params:
+            del query_params[param]
+
+    # Rebuild query string without problematic parameters
+    new_query = urlencode(query_params, doseq=True)
+    new_parsed = parsed._replace(query=new_query)
+    clean_database_url = urlunparse(new_parsed)
+
+    return clean_database_url
 
 # Test database connection directly with asyncpg
 async def db_test():
@@ -7,7 +40,9 @@ async def db_test():
     database_url = "postgresql://neondb_owner:npg_gPuCILYeV73E@ep-square-glitter-a854b5sd-pooler.eastus2.azure.neon.tech/neondb"
 
     try:
-        conn = await asyncpg.connect(database_url)
+        # Clean the database URL for asyncpg
+        clean_url = clean_database_url_for_asyncpg(database_url)
+        conn = await asyncpg.connect(clean_url)
 
         # Run the sanity test query (without created_at since it's not in the table by default)
         rows = await conn.fetch("""

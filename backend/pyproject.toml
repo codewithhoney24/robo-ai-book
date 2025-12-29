@@ -14,10 +14,6 @@ pydantic = "^2.5.0"
 pydantic-settings = "^2.1.0"
 uvicorn = "^0.24.0"
 python-dotenv = "^1.0.0"
-passlib = {extras = ["bcrypt"], version = "^1.7.4"}
-python-jose = {extras = ["cryptography"], version = "^3.3.0"}
-fastapi-users = {extras = ["sqlalchemy"], version = "^12.1.2"}
-email-validator = "^2.1.0.post1"
 setuptools = "^80.9.0"
 async-timeout = "^4.0.3"
 

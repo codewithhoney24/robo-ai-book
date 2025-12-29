@@ -1,47 +1,24 @@
 import React from 'react';
+import { Navigate, useLocation } from '@docusaurus/router';
 import { useAuth } from '../contexts/AuthContext';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  // If requiredBackground is specified, user must have at least this level
-  requiredBackground?: 'software' | 'hardware';
-  // If hasSpecificBackground is specified, user must have this specific background
-  hasSpecificBackground?: string;
-  // Fallback component when user doesn't meet requirements
-  fallback?: React.ReactNode;
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
-  children,
-  requiredBackground,
-  hasSpecificBackground,
-  fallback = <div>Please sign in to access this content.</div>
-}) => {
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const { user, loading } = useAuth();
+  const location = useLocation();
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>Loading...</div>; // Or a proper loading spinner
   }
 
-  // Check if user is authenticated
   if (!user) {
-    return fallback;
+    // Redirect to login page with the current location as a query parameter
+    return <Navigate to="/signin" state={{ from: location }} replace />;
   }
 
-  // Check if user meets background requirements
-  if (requiredBackground) {
-    if (requiredBackground === 'software' && hasSpecificBackground) {
-      if (user.softwareBackground !== hasSpecificBackground) {
-        return fallback;
-      }
-    } else if (requiredBackground === 'hardware' && hasSpecificBackground) {
-      if (user.hardwareBackground !== hasSpecificBackground) {
-        return fallback;
-      }
-    }
-  }
-
-  // User has access to the content
   return <>{children}</>;
 };
 

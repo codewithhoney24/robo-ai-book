@@ -2,6 +2,10 @@
 id: ros2-fundamentals
 title: The Robotic Nervous System (ROS 2) - Nodes, Topics, and Services
 slug: /module-1/ros2-fundamentals
+difficulty: Beginner
+category: ROS2
+hardware_focus: []
+software_focus: [Python, Ubuntu]
 ---
 
 ## Introduction to ROS 2

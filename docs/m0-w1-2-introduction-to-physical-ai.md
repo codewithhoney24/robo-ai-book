@@ -2,6 +2,18 @@
 
 ## Weeks 1-2: Introduction to Physical AI: Foundations, Embodied Intelligence, Sensor Systems
 
+### Hardware Context for Beginners {#hardware-context-for-beginners}
+
+<Personalize forHardwareBackground={["none"]} fallback={<>This content is customized for users without hardware access. Consider the simulation-only approach for your learning path.</>}>
+If you're just starting out without any hardware, don't worry! You can still learn all the fundamental concepts through simulation. We'll focus on software tools and simulators like Gazebo and Isaac Sim that allow you to practice robotics concepts without physical hardware.
+</Personalize>
+
+### Hardware Context for Experienced Users {#hardware-context-for-experienced-users}
+
+<Personalize forHardwareBackground={["jetson", "ros"]} fallback={<>This content is customized for users with hardware experience. We'll dive deeper into hardware-specific implementations and optimization techniques.</>}>
+Since you have hardware experience with Jetson and ROS, we'll dive deeper into hardware-specific implementations and optimization techniques. We'll explore how to optimize your algorithms for real-time performance on embedded systems.
+</Personalize>
+
 ### 1. Foundations of Physical AI
 
 Physical AI (Artificial Intelligence) deals with the integration of AI into physical robots and systems, enabling them to interact with and understand the real world. This field combines robotics, machine learning, computer vision, and control theory to create intelligent autonomous agents. Unlike traditional AI that primarily operates in digital environments, Physical AI focuses on the challenges and opportunities presented by embodied intelligence—where an AI's cognitive processes are deeply intertwined with its physical body and sensory experiences.
