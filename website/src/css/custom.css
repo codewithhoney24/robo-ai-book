@@ -93,6 +93,20 @@ body {
     padding: 0.5rem 1rem !important;
 }
 
+/* Start Learning button styling */
+.header-start-learning {
+  color: #00FFFF !important;
+  font-weight: bold;
+  font-size: 0.9rem;
+  padding: 0.5rem 0.75rem !important;
+}
+
+.header-start-learning:hover {
+  color: #ffffff !important;
+  text-shadow: 0 0 10px #00FFFF;
+  text-decoration: none !important;
+}
+
 /* Mobile menu button */
 .navbar__toggle {
   color: #00FFFF;
@@ -496,11 +510,45 @@ html, body {
   width: 100%;
   flex-shrink: 0;
   text-align: center;
-  padding: 2rem 1rem;
+  padding: 1rem 1rem; /* Reduced from 2rem to 1rem to decrease height */
+  background-color: #0f172a;
+  border-top: 1px solid rgba(0, 255, 255, 0.2);
 }
 
 .footer__bottom {
   text-align: center;
+}
+
+/* Footer links styling */
+.footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+
+.footer__link-item {
+  margin: 0.5rem 0;
+}
+
+.footer__link-item a {
+  color: #00FFFF !important;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.footer__link-item a:hover {
+  color: #ffffff !important;
+  text-decoration: underline;
+}
+
+/* Footer copyright styling */
+.footer__copyright {
+  color: #a5f3fc !important;
+  font-size: 0.85rem;
+  margin-top: 1rem;
 }
 
 /* Ensure content wrapper takes available space */
@@ -511,7 +559,64 @@ html, body {
 }
 
 /* =========================================
-   13. RESPONSIVE MEDIA QUERIES
+   13. FOOTER RESPONSIVE MEDIA QUERIES
+   ========================================= */
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .footer {
+    padding: 1rem 0.5rem;
+  }
+
+  .footer__links {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .footer__link-item {
+    text-align: center;
+  }
+
+  .footer__copyright {
+    font-size: 0.75rem;
+    padding: 0 0.5rem;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .footer__links {
+    gap: 1.5rem;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .footer__links {
+    gap: 2rem;
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .footer {
+    padding: 1.5rem 1rem;
+  }
+
+  .footer__links {
+    justify-content: space-around;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  .footer__links {
+    gap: 3rem;
+  }
+}
+
+/* =========================================
+   14. RESPONSIVE MEDIA QUERIES
    ========================================= */
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
@@ -574,7 +679,7 @@ html, body {
 }
 
 /* =========================================
-   14. MOBILE NAVIGATION MENU
+   16. MOBILE NAVIGATION MENU
    ========================================= */
 /* Mobile menu button */
 .navbar__toggle {

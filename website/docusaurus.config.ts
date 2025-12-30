@@ -19,18 +19,24 @@ const config: Config = {
   projectName: 'robo-ai-book',
 
   onBrokenLinks: 'warn',
-  onBrokenMarkdownLinks: 'warn',
+  markdown: {
+    format: 'detect',
+    mermaid: false,
+    mdx1Compat: {
+      comments: true,
+      admonitions: true,
+      headingIds: true,
+    },
+    hooks: {
+      onBrokenMarkdownLinks: 'warn',
+    },
+  },
 
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
   },
 
-  // Naya 'markdown' block yahan add karen
-  markdown: {
-    // Broken image warnings ko 'warn' par set kar diya
-    onBrokenMarkdownImages: 'warn',
-  },
 
   presets: [
     [
@@ -77,6 +83,7 @@ const config: Config = {
     customFields: {
       // These values will be available in the client-side code
       REACT_APP_API_BASE_URL: process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000/api',
+      onBrokenMarkdownImages: 'warn',
     },
 
     // MDX components configuration
@@ -95,26 +102,10 @@ const config: Config = {
       },
       items: [
         {
-          type: 'doc',
-          docId: 'module-1/ros2-fundamentals',
+          label: 'Start Learning',
           position: 'left',
-          label: 'Module 1: ROS 2',
-        },
-        {
-          type: 'dropdown',
-          label: 'Modules',
-          position: 'left',
-          items: [
-            { label: 'Module 1: ROS 2 Fundamentals', to: '/module/module-1/ros2-fundamentals' },
-            { label: 'Module 2: Gazebo Physics Simulation', to: '/module/m2-w6-gazebo-physics-simulation' },
-            { label: 'Module 2: Unity Rendering & HRI', to: '/module/m2-w7-sensor-simulation-unity' },
-            { label: 'Module 3: Isaac Sim & ROS', to: '/module/m3-w8-isaac-sim-synthetic-data' },
-            { label: 'Module 3: Isaac ROS Navigation', to: '/module/m3-w9-isaac-ros-vslam-nav2' },
-            { label: 'Module 3: RL Sim-to-Real', to: '/module/m3-w10-rl-sim-to-real' },
-            { label: 'Module 4: Humanoid Kinematics', to: '/module/m4-w11-humanoid-kinematics-balance' },
-            { label: 'Module 4: Manipulation & HRI', to: '/module/m4-w12-manipulation-hri-design' },
-            { label: 'Module 4: Conversational Robotics', to: '/module/m4-w13a-conversational-robotics' },
-          ],
+          className: 'header-start-learning',
+          to: '/module/module-1/ros2-fundamentals',
         },
         //  {
         //   label: 'SYSTEM ACTIVE',
@@ -127,12 +118,12 @@ const config: Config = {
           label: 'GitHub',
           position: 'right',
         },
-        {
-          label: 'Get Started',
-          position: 'right',
-          className: 'header-get-started',
-          to: '/module/module-1/ros2-fundamentals',
-        },
+        // {
+        //   label: 'Start Learning',
+        //   position: 'right',
+        //   className: 'header-start-learning',
+        //   to: '/module/module-1/ros2-fundamentals',
+        // },
         {
           href: '/signup',
           label: 'Sign Up',
@@ -158,6 +149,11 @@ const config: Config = {
             { label: 'Module 2: Unity Rendering & HRI', to: '/module/m2-w7-sensor-simulation-unity' },
             { label: 'Module 3: Isaac Sim & ROS', to: '/module/m3-w8-isaac-sim-synthetic-data' },
             { label: 'Module 3: Isaac ROS Navigation', to: '/module/m3-w9-isaac-ros-vslam-nav2' },
+          ],
+        },
+        {
+          title: 'Modules (continued)',
+          items: [
             { label: 'Module 3: RL Sim-to-Real', to: '/module/m3-w10-rl-sim-to-real' },
             { label: 'Module 4: Humanoid Kinematics', to: '/module/m4-w11-humanoid-kinematics-balance' },
             { label: 'Module 4: Manipulation & HRI', to: '/module/m4-w12-manipulation-hri-design' },
@@ -165,16 +161,11 @@ const config: Config = {
           ],
         },
         {
-          title: 'Project Goals',
-          items: [
-            { label: 'Embodied Intelligence', href: 'https://panaversity.org' },
-            { label: 'Start Learning', to: '/module/module-1/ros2-fundamentals' },
-          ],
-        },
-        {
           title: 'Community',
           items: [
             { label: 'GitHub Repo', href: 'https://github.com/codewithhoney24/robo-ai-book' },
+            { label: 'Embodied Intelligence', href: 'https://panaversity.org' },
+            { label: 'Start Learning', to: '/module/module-1/ros2-fundamentals' },
           ],
         },
       ],
