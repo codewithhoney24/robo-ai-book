@@ -12,14 +12,24 @@ WORKDIR /app
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         postgresql-client \
+        build-essential \
+        libffi-dev \
+        libssl-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy project requirements
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy project
+# Copy the entire project
 COPY . .
+
+# Change to the backend directory and install backend dependencies if they exist
+WORKDIR /app/backend
+RUN if [ -f "requirements.txt" ]; then pip install --no-cache-dir -r requirements.txt; fi
+
+# Go back to the main directory
+WORKDIR /app
 
 # Expose port
 EXPOSE $PORT

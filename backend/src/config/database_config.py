@@ -12,10 +12,14 @@ logger = logging.getLogger(__name__)
 
 # ✅ CRITICAL FIX: Check if database URL exists
 if not settings.neon_database_url or settings.neon_database_url.strip() == "":
-    raise ValueError(
-        "❌ NEON_DATABASE_URL is missing or empty in .env file!\n"
-        "Please add: NEON_DATABASE_URL=postgresql://your_connection_string"
+    # Log a warning instead of raising an error to allow the app to start
+    logger.warning(
+        "NEON_DATABASE_URL is missing or empty in .env file!\n"
+        "Please add: NEON_DATABASE_URL=postgresql://your_connection_string\n"
+        "Database functionality will be unavailable until this is set."
     )
+    # Set a default value to prevent crashes during import
+    settings.neon_database_url = "sqlite:///./default.db"
 
 # Convert database URLs to work with async drivers
 DATABASE_URL = settings.neon_database_url

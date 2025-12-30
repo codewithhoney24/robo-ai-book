@@ -29,14 +29,20 @@ POOL_RECYCLE = int(os.getenv("POOL_RECYCLE", "3600"))  # 1 hour
 if not DATABASE_URL or DATABASE_URL.strip() == "":
     # Provide a default or placeholder URL if the environment variable is not set
     logger.warning("NEON_DATABASE_URL not found in environment. Using default connection settings.")
-    DATABASE_URL = "postgresql+asyncpg://username:password@localhost:5432/defaultdb"
+    DATABASE_URL = "sqlite+aiosqlite:///./default.db"
 
-# Clean the database URL for asyncpg first
-clean_database_url = clean_database_url_for_asyncpg(DATABASE_URL)
+# Clean the database URL for asyncpg first (only for PostgreSQL URLs)
+if DATABASE_URL.startswith("postgresql://") or DATABASE_URL.startswith("postgres://"):
+    clean_database_url = clean_database_url_for_asyncpg(DATABASE_URL)
+else:
+    # For SQLite, don't process the URL with PostgreSQL-specific cleaning
+    clean_database_url = DATABASE_URL
 
 # Ensure async driver in DATABASE_URL (use asyncpg for PostgreSQL, aiosqlite for SQLite)
 if clean_database_url.startswith("postgresql://") and "+" not in clean_database_url.split("://",1)[1]:
     async_db_url = clean_database_url.replace("postgresql://", "postgresql+asyncpg://", 1)
+elif clean_database_url.startswith("postgres://") and "+" not in clean_database_url.split("://",1)[1]:
+    async_db_url = clean_database_url.replace("postgres://", "postgresql+asyncpg://", 1)
 elif clean_database_url.startswith("sqlite://") and "+" not in clean_database_url.split("://",1)[1]:
     # Handle both sqlite:// and sqlite:/// formats
     async_db_url = clean_database_url.replace("sqlite://", "sqlite+aiosqlite://", 1)

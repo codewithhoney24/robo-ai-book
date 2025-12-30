@@ -181,8 +181,10 @@ def validate_configuration_values(
     Returns:
         bool: True if valid, False otherwise
     """
-    # Validate database URL
-    if not database_url.startswith("postgresql://"):
+    # Validate database URL - allow both PostgreSQL and SQLite URLs
+    if not (database_url.startswith("postgresql://") or
+            database_url.startswith("postgres://") or
+            database_url.startswith("sqlite://")):
         db_logger.log_error(
             ValueError(f"Invalid database URL format: {database_url}"),
             context="Configuration Validation"

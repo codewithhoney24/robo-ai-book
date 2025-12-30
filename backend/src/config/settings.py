@@ -53,7 +53,7 @@ class Settings(BaseSettings):
     access_token_expire_minutes: int = 30
 
     # Database settings
-    database_url: str = "file:./dev.db"  # Default value from .env
+    database_url: str = "sqlite:///./dev.db"  # Default value from .env
 
     # Other settings
     qwen_cli_path: str = ""

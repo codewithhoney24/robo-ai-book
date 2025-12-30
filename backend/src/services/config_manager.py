@@ -101,7 +101,10 @@ class ConfigurationManagerService:
             if hasattr(self.settings, key):
                 # Validate the new value
                 if key == "neon_database_url":
-                    if not value.startswith("postgresql://"):
+                    # Check if the URL starts with any of the supported formats
+                    if not (value.startswith("postgresql://") or
+                            value.startswith("postgres://") or
+                            value.startswith("sqlite://")):
                         raise ValidationError(
                             message=f"Invalid database URL format: {value}",
                             field=key,
@@ -142,8 +145,13 @@ class ConfigurationManagerService:
         """
         Validate the current configuration and return validation results.
         """
+        # Check if the URL starts with any of the supported formats
+        database_url_valid = (self.settings.neon_database_url.startswith("postgresql://") or
+                              self.settings.neon_database_url.startswith("postgres://") or
+                              self.settings.neon_database_url.startswith("sqlite://"))
+
         results = {
-            "database_url_valid": self.settings.neon_database_url.startswith("postgresql://"),
+            "database_url_valid": database_url_valid,
             "max_connections_valid": 0 < self.settings.max_connections <= 100,
             "min_connections_valid": 0 <= self.settings.min_connections <= self.settings.max_connections,
             "connection_timeout_valid": 1 <= self.settings.connection_timeout <= 60,
