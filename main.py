@@ -15,6 +15,9 @@ def main():
     backend_path = Path(__file__).parent / "backend"
     os.chdir(backend_path)
 
+    # Add the backend directory to the Python path to ensure modules can be found
+    sys.path.insert(0, str(backend_path))
+
     # Import and run the server
     import uvicorn
     from src.api.main import app
