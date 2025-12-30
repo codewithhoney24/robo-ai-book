@@ -1,18 +1,23 @@
+# Python 3.11
+python_version = "3.11"
+
 [build]
   # Explicitly specify Python as the buildpack
-  buildpack = "nixpacks/buildpacks/python"
+  buildpack = "https://github.com/heroku/buildpack-python"
 
 [phases.setup]
-  nixPkgs = ["python3", "python3Packages.pip", "gcc", "g++", "stdenv"]
+  # Install Python and pip explicitly
+  nixPkgs = ["python311", "python311Packages.pip", "gcc", "g++", "stdenv", "postgresql"]
   cmds = [
-    "python3 -m pip install --upgrade pip",
-    "python3 -m pip install -r requirements.txt"
+    "python3 --version",
+    "pip install --upgrade pip",
+    "pip install -r requirements.txt"
   ]
 
 [phases.build]
   cmds = [
-    "cd backend && python3 create_tables.py"
+    "cd backend && python create_tables.py"
   ]
 
 [start]
-  cmd = "cd backend && python3 -m uvicorn src.api.main:app --host 0.0.0.0 --port $PORT"
+  cmd = "cd backend && python -m uvicorn src.api.main:app --host 0.0.0.0 --port $PORT"
