@@ -74,10 +74,10 @@ export default function HomepageFeatures(): ReactNode {
     <section className={styles.featuresSection}>
       <div className="container">
         {/* --- ADDED TITLE AND PARAGRAPH HERE --- */}
-        <Heading as="h2" className="text--center">
+        <Heading as="h2" className={`${styles.curriculumTitle} text--center`}>
           Our Robotics Curriculum
         </Heading>
-        <p className="text--center">
+        <p className={`${styles.hriText} text--center`}>
           Human-Robot Interaction
         </p>
         {/* ------------------------------------- */}

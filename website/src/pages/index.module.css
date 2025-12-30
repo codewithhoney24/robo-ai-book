@@ -1,7 +1,7 @@
 /* Hero Banner */
 .heroBanner {
-  top: 10px;
-  padding: 9rem 0;
+  top: 0px;
+  padding: 6rem 1rem;
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -10,9 +10,16 @@
   color: rgb(0, 255, 255) !important; /* ✅ Global Color applied */
 }
 
-@media screen and (max-width: 996px) {
+/* Responsive hero banner padding */
+@media screen and (max-width: 768px) {
   .heroBanner {
-    padding: 2rem;
+    padding: 3rem 1rem;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .heroBanner {
+    padding: 2rem 1rem;
   }
 }
 
@@ -23,10 +30,24 @@
   padding: 0 1rem;
 }
 
+/* Responsive container */
+@media screen and (max-width: 768px) {
+  .container {
+    padding: 0 0.75rem;
+  }
+}
+
 /* Main content area to ensure proper spacing below hero banner */
 main {
   margin-top: 2rem;
   padding: 2rem 0;
+}
+
+/* Responsive main content */
+@media screen and (max-width: 768px) {
+  main {
+    padding: 1.5rem 0;
+  }
 }
 
 /* Top Navbar Buttons */
@@ -36,6 +57,23 @@ main {
   align-items: center;
   gap: 1rem;
   margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+/* Responsive top buttons */
+@media screen and (max-width: 768px) {
+  .topButtons {
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .topButtons {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
 }
 
 .navButton {
@@ -47,11 +85,21 @@ main {
   font-weight: 600;
   text-decoration: none;
   transition: all 0.3s ease;
+  font-size: 0.9rem;
+  white-space: nowrap;
 }
 
 .navButton:hover {
   background-color: #0994df;
   color: #fff !important; /* Hover pe white taake parha jaye */
+}
+
+/* Responsive nav button */
+@media screen and (max-width: 768px) {
+  .navButton {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
 }
 
 /* System Badge */
@@ -63,24 +111,53 @@ main {
   padding: 0.3rem 0.8rem;
   border-radius: 9999px;
   font-size: 0.8rem;
+  white-space: nowrap;
 }
 
 .systemBadge:hover {
   background-color: #0994df;
 }
 
+/* Responsive system badge */
+@media screen and (max-width: 768px) {
+  .systemBadge {
+    padding: 0.25rem 0.6rem;
+    font-size: 0.7rem;
+  }
+}
+
 /* Hero Title (Main Heading) */
 .heroTitle {
-  font-size: 3rem;
+  font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 1rem;
   /* 👇 YE MISSING THA, AB ADD KAR DIYA HAI */
   color: rgb(0, 255, 255) !important;
+  line-height: 1.2;
 }
 
+/* Responsive hero title */
 @media screen and (max-width: 768px) {
   .heroTitle {
-    font-size: 2.2rem;
+    font-size: 2rem;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .heroTitle {
+    font-size: 1.75rem;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .heroTitle {
+    font-size: 3rem;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .heroTitle {
+    font-size: 3.5rem;
   }
 }
 
@@ -89,6 +166,22 @@ main {
   font-size: 1.2rem;
   margin-bottom: 2rem;
   color: rgb(0, 255, 255) !important; /* ✅ Text Color Fixed */
+  line-height: 1.4;
+}
+
+/* Responsive hero subtitle */
+@media screen and (max-width: 768px) {
+  .heroSubtitle {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .heroSubtitle {
+    font-size: 0.9rem;
+    margin-bottom: 1.25rem;
+  }
 }
 
 /* Interactive AI Nodes */
@@ -100,6 +193,14 @@ main {
   margin-bottom: 2rem;
 }
 
+/* Responsive AI nodes */
+@media screen and (max-width: 768px) {
+  .aiNodes {
+    gap: 0.6rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
 .node {
   background-color: #64748b; /* Gray-blue */
   color: rgb(0, 255, 255) !important; /* ✅ Text Color Fixed */
@@ -108,11 +209,20 @@ main {
   font-weight: 500;
   font-size: 0.9rem;
   border: 1px solid rgba(0, 255, 255, 0.1);
+  white-space: nowrap;
 }
 
 .node:hover {
   background-color: #0994df;
   color: white !important;
+}
+
+/* Responsive node */
+@media screen and (max-width: 768px) {
+  .node {
+    padding: 0.3rem 0.8rem;
+    font-size: 0.8rem;
+  }
 }
 
 /* Main CTA Buttons */
@@ -121,6 +231,22 @@ main {
   justify-content: center;
   gap: 1rem;
   flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+/* Responsive buttons container */
+@media screen and (max-width: 768px) {
+  .buttons {
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .buttons {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 .primaryButton {
@@ -132,12 +258,31 @@ main {
   font-weight: 600;
   text-decoration: none;
   transition: all 0.3s ease;
+  font-size: 1rem;
+  min-width: 180px;
+  text-align: center;
 }
 
 .primaryButton:hover {
   background-color: #00FFFF; /* Neon Hover */
   color: #000 !important; /* Text Black on Hover */
   border: 1px solid rgb(0, 255, 255);
+}
+
+/* Responsive primary button */
+@media screen and (max-width: 768px) {
+  .primaryButton {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+    min-width: 160px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .primaryButton {
+    width: 100%;
+    min-width: auto;
+  }
 }
 
 .secondaryButton {
@@ -149,9 +294,28 @@ main {
   font-weight: 600;
   text-decoration: none;
   transition: all 0.3s ease;
+  font-size: 1rem;
+  min-width: 180px;
+  text-align: center;
 }
 
 .secondaryButton:hover {
   background-color: rgba(0, 255, 255, 0.1);
   border: 1px solid rgba(0, 255, 255, 0.8);
+}
+
+/* Responsive secondary button */
+@media screen and (max-width: 768px) {
+  .secondaryButton {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+    min-width: 160px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .secondaryButton {
+    width: 100%;
+    min-width: auto;
+  }
 }

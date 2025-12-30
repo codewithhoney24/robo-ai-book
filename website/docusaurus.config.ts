@@ -51,7 +51,7 @@ const config: Config = {
       '@docusaurus/plugin-content-docs',
       {
         id: 'default',
-        path: '../docs',
+        path: 'docs', // Changed from '../docs' to 'docs' to look in the local directory
         routeBasePath: 'module',
         sidebarPath: require.resolve('./sidebars.ts'),
         exclude: [
@@ -139,8 +139,8 @@ const config: Config = {
           title: 'Core Modules',
           items: [
             { label: 'ROS 2 Fundamentals', to: '/module/module-1/ros2-fundamentals' },
-            { label: 'Gazebo Physics Simulation', to: '/module/module-1/ros2-fundamentals' },
-            { label: 'Unity Rendering & HRI', to: '/module/module-1/ros2-fundamentals' },
+            { label: 'Gazebo Physics Simulation', to: '/module/m2-w6-gazebo-physics-simulation' },
+            { label: 'Unity Rendering & HRI', to: '/module/m2-w7-sensor-simulation-unity' },
           ],
         },
         {

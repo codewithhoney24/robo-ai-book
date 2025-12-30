@@ -1,41 +1,76 @@
+/* Authentication Forms - Responsive Styles */
 .signup-form-container, .signin-form-container {
   max-width: 600px;
-  margin: 0 auto;
+  margin: 4rem auto;
   padding: 2rem;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: #0f172a;
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+  color: #00FFFF;
 }
 
-.signup-form-container h2, .signin-form-container h2 {
-  margin-top: 0;
-  color: #2c3e50;
+/* Responsive form container */
+@media (max-width: 768px) {
+  .signup-form-container, .signin-form-container {
+    margin: 2rem auto;
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .signup-form-container, .signin-form-container {
+    margin: 1.5rem auto;
+    padding: 1.25rem;
+    width: 90%;
+  }
+}
+
+@media (max-width: 400px) {
+  .signup-form-container, .signin-form-container {
+    width: 95%;
+    padding: 1rem;
+  }
+}
+
+.signup-form-container h1, .signin-form-container h1 {
+  color: #00FFFF;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+}
+
+/* Responsive heading */
+@media (max-width: 768px) {
+  .signup-form-container h1, .signin-form-container h1 {
+    font-size: 1.6rem;
+  }
 }
 
 .form-section {
-  margin-bottom: 2rem;
-  padding: 1.5rem;
-  border: 1px solid #eaeaea;
-  border-radius: 6px;
-  background-color: #fafafa;
+  margin-bottom: 1.5rem;
+  padding: 1.25rem;
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  border-radius: 8px;
+  background-color: rgba(15, 23, 42, 0.8);
 }
 
 .form-section h3 {
   margin-top: 0;
   margin-bottom: 1rem;
-  color: #34495e;
-  font-size: 1.2rem;
+  color: #a5f3fc;
+  font-size: 1.1rem;
 }
 
 .form-group {
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
 }
 
 .form-group label {
   display: block;
   margin-bottom: 0.5rem;
+  color: #a5f3fc;
   font-weight: 500;
-  color: #2c3e50;
 }
 
 .form-group input[type="text"],
@@ -44,8 +79,10 @@
 .form-group select {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  border-radius: 5px;
+  color: #00FFFF;
   font-size: 1rem;
   box-sizing: border-box;
 }
@@ -53,18 +90,20 @@
 .form-group input:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #3498db;
-  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+  border-color: #00FFFF;
+  box-shadow: 0 0 0 2px rgba(0, 255, 255, 0.3);
 }
 
 .checkbox-group {
   display: flex;
   align-items: center;
+  color: #a5f3fc;
 }
 
 .checkbox-group input[type="checkbox"] {
   margin-right: 0.5rem;
-  width: auto;
+  width: 1rem;
+  height: 1rem;
 }
 
 .form-group select[multiple] {
@@ -74,42 +113,81 @@
 .form-group small {
   display: block;
   margin-top: 0.25rem;
-  color: #7f8c8d;
+  color: #a5f3fc;
   font-size: 0.85rem;
 }
 
 .error {
-  color: #e74c3c;
+  color: #ff6b6b;
   font-size: 0.85rem;
   margin-top: 0.25rem;
   display: block;
+  text-align: center;
 }
 
 .submit-error {
-  background: #fdf2f2;
+  background: rgba(255, 107, 107, 0.1);
   padding: 0.75rem;
   border-radius: 4px;
-  border-left: 3px solid #e74c3c;
+  border-left: 3px solid #ff6b6b;
+  margin-bottom: 1rem;
 }
 
 .submit-btn {
   width: 100%;
   padding: 0.75rem 1rem;
-  background-color: #3498db;
-  color: white;
+  background-color: #00FFFF;
+  color: #000;
   border: none;
-  border-radius: 4px;
-  font-size: 1rem;
-  font-weight: 600;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.3s ease;
 }
 
 .submit-btn:hover:not(:disabled) {
-  background-color: #2980b9;
+  background-color: #ccffff;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
 }
 
 .submit-btn:disabled {
   background-color: #bdc3c7;
   cursor: not-allowed;
+}
+
+/* Link styles */
+.auth-link {
+  color: #00FFFF;
+  text-decoration: underline;
+  text-align: center;
+  display: block;
+  margin-top: 1rem;
+}
+
+.auth-link:hover {
+  color: #33FFFF;
+}
+
+/* Responsive form elements */
+@media (max-width: 768px) {
+  .form-group input[type="text"],
+  .form-group input[type="email"],
+  .form-group input[type="password"],
+  .form-group select {
+    padding: 0.65rem;
+    font-size: 0.95rem;
+  }
+
+  .submit-btn {
+    padding: 0.7rem 0.9rem;
+    font-size: 1rem;
+  }
+}
+
+/* Center text on mobile */
+@media (max-width: 576px) {
+  .checkbox-group {
+    justify-content: flex-start;
+  }
 }
