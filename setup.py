@@ -1,0 +1,31 @@
+from setuptools import setup, find_packages
+
+setup(
+    name="robo-ai-book-platform",
+    version="1.0.0",
+    description="Physical AI textbook platform with RAG chatbot",
+    packages=find_packages(),
+    install_requires=[
+        "fastapi==0.127.0",
+        "uvicorn==0.34.2",
+        "python-dotenv==1.0.0",
+        "asyncpg==0.29.0",
+        "sqlalchemy==2.0.23",
+        "psycopg2-binary==2.9.9",
+        "pydantic==2.12.5",
+        "pydantic-settings==2.1.0",
+        "pytest==8.3.4",
+        "httpx==0.28.1",
+        "qdrant-client==1.16.2",
+        "openai==1.57.4",
+        "deep-translator==1.11.4",
+        "aiosqlite==0.20.0",
+        "async-timeout==4.0.3",
+        "cohere==5.20.1"
+    ],
+    entry_points={
+        'console_scripts': [
+            'start-app=main:main',
+        ],
+    },
+)
