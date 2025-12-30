@@ -6,6 +6,9 @@ import os
 import sys
 from pathlib import Path
 
+# Add the project root to the Python path to ensure modules can be found
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 def main():
     """Main entry point for the application"""
     # Change to the backend directory
