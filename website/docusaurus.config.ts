@@ -19,6 +19,7 @@ const config: Config = {
   projectName: 'robo-ai-book',
 
   onBrokenLinks: 'warn',
+  onBrokenMarkdownLinks: 'warn',
 
   i18n: {
     defaultLocale: 'en',
@@ -27,10 +28,8 @@ const config: Config = {
 
   // Naya 'markdown' block yahan add karen
   markdown: {
-    hooks: {
-      // Broken image warnings ko 'warn' par set kar diya
-      onBrokenMarkdownImages: 'warn',
-    },
+    // Broken image warnings ko 'warn' par set kar diya
+    onBrokenMarkdownImages: 'warn',
   },
 
   presets: [
@@ -99,7 +98,23 @@ const config: Config = {
           type: 'doc',
           docId: 'module-1/ros2-fundamentals',
           position: 'left',
-          label: 'Start Learning',
+          label: 'Module 1: ROS 2',
+        },
+        {
+          type: 'dropdown',
+          label: 'Modules',
+          position: 'left',
+          items: [
+            { label: 'Module 1: ROS 2 Fundamentals', to: '/module/module-1/ros2-fundamentals' },
+            { label: 'Module 2: Gazebo Physics Simulation', to: '/module/m2-w6-gazebo-physics-simulation' },
+            { label: 'Module 2: Unity Rendering & HRI', to: '/module/m2-w7-sensor-simulation-unity' },
+            { label: 'Module 3: Isaac Sim & ROS', to: '/module/m3-w8-isaac-sim-synthetic-data' },
+            { label: 'Module 3: Isaac ROS Navigation', to: '/module/m3-w9-isaac-ros-vslam-nav2' },
+            { label: 'Module 3: RL Sim-to-Real', to: '/module/m3-w10-rl-sim-to-real' },
+            { label: 'Module 4: Humanoid Kinematics', to: '/module/m4-w11-humanoid-kinematics-balance' },
+            { label: 'Module 4: Manipulation & HRI', to: '/module/m4-w12-manipulation-hri-design' },
+            { label: 'Module 4: Conversational Robotics', to: '/module/m4-w13a-conversational-robotics' },
+          ],
         },
         //  {
         //   label: 'SYSTEM ACTIVE',
@@ -136,11 +151,17 @@ const config: Config = {
       style: 'dark',
       links: [
         {
-          title: 'Core Modules',
+          title: 'Modules',
           items: [
-            { label: 'ROS 2 Fundamentals', to: '/module/module-1/ros2-fundamentals' },
-            { label: 'Gazebo Physics Simulation', to: '/module/m2-w6-gazebo-physics-simulation' },
-            { label: 'Unity Rendering & HRI', to: '/module/m2-w7-sensor-simulation-unity' },
+            { label: 'Module 1: ROS 2 Fundamentals', to: '/module/module-1/ros2-fundamentals' },
+            { label: 'Module 2: Gazebo Physics Simulation', to: '/module/m2-w6-gazebo-physics-simulation' },
+            { label: 'Module 2: Unity Rendering & HRI', to: '/module/m2-w7-sensor-simulation-unity' },
+            { label: 'Module 3: Isaac Sim & ROS', to: '/module/m3-w8-isaac-sim-synthetic-data' },
+            { label: 'Module 3: Isaac ROS Navigation', to: '/module/m3-w9-isaac-ros-vslam-nav2' },
+            { label: 'Module 3: RL Sim-to-Real', to: '/module/m3-w10-rl-sim-to-real' },
+            { label: 'Module 4: Humanoid Kinematics', to: '/module/m4-w11-humanoid-kinematics-balance' },
+            { label: 'Module 4: Manipulation & HRI', to: '/module/m4-w12-manipulation-hri-design' },
+            { label: 'Module 4: Conversational Robotics', to: '/module/m4-w13a-conversational-robotics' },
           ],
         },
         {
