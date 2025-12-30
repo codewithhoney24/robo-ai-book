@@ -1,0 +1,29 @@
+{
+  "build": {
+    "builder": "NIXPACKS",
+    "matcher": "PYTHON",
+    "nixpacksConfig": {
+      "phases": {
+        "setup": {
+          "aptPkgs": ["python3", "python3-pip", "gcc", "g++", "build-essential"],
+          "cmds": [
+            "python3 -m pip install --upgrade pip",
+            "python3 -m pip install -r requirements.txt"
+          ]
+        },
+        "build": {
+          "cmds": [
+            "cd backend && python3 create_tables.py"
+          ]
+        }
+      },
+      "startCommand": "cd backend && python3 -m uvicorn src.api.main:app --host 0.0.0.0 --port $PORT"
+    }
+  },
+  "deploy": {
+    "startCommand": "cd backend && python3 -m uvicorn src.api.main:app --host 0.0.0.0 --port $PORT",
+    "numReplicas": 1,
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 3
+  }
+}

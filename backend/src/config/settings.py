@@ -24,8 +24,8 @@ class Settings(BaseSettings):
     app_name: str = "RAG Chatbot for Published Book"
     debug: bool = False
     version: str = "1.0.0"
-    host: str = "127.0.0.1"
-    port: int = 8000
+    host: str = os.getenv("HOST", "127.0.0.1")
+    port: int = int(os.getenv("PORT", 8000))
     max_query_length: int = 2000
     relevance_threshold: float = 0.7
 
