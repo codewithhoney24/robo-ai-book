@@ -13,18 +13,18 @@ class EmbeddingService:
     """
 
     def __init__(self):
-        # Initialize OpenAI client if API key is available (prioritized to avoid rate limits)
-        if settings.OPENAI_API_KEY:
-            openai.api_key = settings.OPENAI_API_KEY
-            self.embedding_model = "text-embedding-ada-002"  # Using OpenAI's embedding model
-            self.use_cohere = False
-        elif settings.cohere_api_key:
-            # Configure Cohere client as fallback
+        # Initialize Cohere client if API key is available (primary service)
+        if settings.cohere_api_key:
             self.client = cohere.Client(settings.cohere_api_key, timeout=30)
             self.embedding_model = "embed-english-v3.0"  # Using Cohere's English embedding model
             self.use_cohere = True
+        elif settings.OPENAI_API_KEY:
+            # Configure OpenAI client as fallback
+            openai.api_key = settings.OPENAI_API_KEY
+            self.embedding_model = "text-embedding-ada-002"  # Using OpenAI's embedding model
+            self.use_cohere = False
         else:
-            raise ValueError("No valid API key found for embeddings. Please set either OPENAI_API_KEY or COHERE_API_KEY in your environment variables.")
+            raise ValueError("No valid API key found for embeddings. Please set either COHERE_API_KEY or OPENAI_API_KEY in your environment variables.")
 
     def generate_embedding(self, text: str) -> List[float]:
         """
