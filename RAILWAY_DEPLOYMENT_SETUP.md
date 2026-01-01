@@ -28,7 +28,7 @@ The backend API is available at `https://web-production-3ced.up.railway.app/api/
 The backend uses the following key environment variables:
 - `DATABASE_URL` - PostgreSQL database connection string
 - `QDRANT_ENDPOINT` - Vector database endpoint
-- `COHERE_API_KEY` - Cohere API key for embeddings
+- `COHERE_API_KEY` - Cohere API key for embeddings (Note: Currently removed to prevent rate limiting)
 - `OPENAI_API_KEY` - OpenAI API key
 - `HOST` - Set to `0.0.0.0` for Railway deployment
 - `PORT` - Port number (automatically set by Railway)
