@@ -332,11 +332,13 @@ class DatabaseAvailabilityChecker:
         try:
             # Get the current pool status
             pool = engine.pool
+            # Check database availability first
+            db_available = await DatabaseAvailabilityChecker.is_database_available()
             return {
                 "pool_size": MAX_CONNECTIONS,
                 "max_overflow": getattr(pool, 'max_overflow', 0),
                 "checked_out": getattr(pool, '_checkedout', 0),  # This attribute might vary by SQLAlchemy version
-                "database_available": await DatabaseAvailabilityChecker.is_database_available()
+                "database_available": db_available
             }
         except Exception as e:
             logger.error(f"Error getting connection pool metrics: {e}")
