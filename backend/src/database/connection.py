@@ -95,11 +95,12 @@ async def validate_db_connection() -> bool:
     Returns:
         bool: True if connection is valid, False otherwise
     """
+    from sqlalchemy import text
     try:
         async with async_timeout.timeout(CONNECTION_TIMEOUT):
             async with engine.connect() as conn:
                 # Execute a simple query to test the connection
-                result = await conn.execute("SELECT 1")
+                result = await conn.execute(text("SELECT 1"))
                 _ = result.fetchone()
         return True
     except Exception as e:
@@ -118,13 +119,12 @@ def get_connection_metrics() -> dict:
     pool = engine.pool
 
     return {
-        "pool_size": getattr(pool, 'size', 'unknown') if hasattr(pool, 'size') else 'unknown',
+        "pool_size": getattr(engine.pool, 'size', 'unknown') if hasattr(engine.pool, 'size') else 'unknown',
         "pool_timeout": CONNECTION_TIMEOUT,
         "command_timeout": COMMAND_TIMEOUT,
-        "max_overflow": getattr(pool, 'max_overflow', 'unknown'),
-        "checked_out": getattr(pool, '_overflow', 'unknown'),
+        "max_overflow": getattr(engine.pool, 'max_overflow', 'unknown') if hasattr(engine.pool, 'max_overflow') else 'unknown',
         "recycle": POOL_RECYCLE,
-        "database_url": async_db_url.replace(async_db_url.split('@')[-1], "***@***")
+        "database_url": "***@***"  # Mask the database URL for security
     }
 
 async def init_db() -> None:
