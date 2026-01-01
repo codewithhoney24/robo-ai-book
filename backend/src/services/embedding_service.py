@@ -1,4 +1,5 @@
 import cohere
+import openai
 from typing import List
 import numpy as np
 from ..config.settings import settings
@@ -8,13 +9,22 @@ from .caching_service import caching_service
 
 class EmbeddingService:
     """
-    Service for generating embeddings using Cohere API
+    Service for generating embeddings using Cohere API with OpenAI fallback
     """
 
     def __init__(self):
-        # Initialize Cohere client with timeout
-        self.client = cohere.Client(settings.cohere_api_key, timeout=30)
-        self.embedding_model = "embed-english-v3.0"  # Using Cohere's English embedding model
+        # Initialize OpenAI client if API key is available (prioritized to avoid rate limits)
+        if settings.OPENAI_API_KEY:
+            openai.api_key = settings.OPENAI_API_KEY
+            self.embedding_model = "text-embedding-ada-002"  # Using OpenAI's embedding model
+            self.use_cohere = False
+        elif settings.cohere_api_key:
+            # Configure Cohere client as fallback
+            self.client = cohere.Client(settings.cohere_api_key, timeout=30)
+            self.embedding_model = "embed-english-v3.0"  # Using Cohere's English embedding model
+            self.use_cohere = True
+        else:
+            raise ValueError("No valid API key found for embeddings. Please set either OPENAI_API_KEY or COHERE_API_KEY in your environment variables.")
 
     def generate_embedding(self, text: str) -> List[float]:
         """
@@ -28,13 +38,21 @@ class EmbeddingService:
                 embedding_logger.debug(f"Retrieved embedding from cache for text of length {len(text)}")
                 return cached_result
 
-            response = self.client.embed(
-                texts=[text],
-                model=self.embedding_model,
-                input_type="search_query"
-            )
+            if self.use_cohere:
+                response = self.client.embed(
+                    texts=[text],
+                    model=self.embedding_model,
+                    input_type="search_query"
+                )
+                embedding_result = response.embeddings[0]
+            else:
+                # Use OpenAI API
+                response = openai.embeddings.create(
+                    input=[text],
+                    model=self.embedding_model
+                )
+                embedding_result = response.data[0].embedding
 
-            embedding_result = response.embeddings[0]
             # Cache the result with a default TTL of 1 hour
             caching_service.set(cache_key, embedding_result, ttl_seconds=3600)
 
@@ -64,13 +82,21 @@ class EmbeddingService:
                 embedding_logger.debug(f"Retrieved combined embedding from cache for text of length {len(combined_text)}")
                 return cached_result
 
-            response = self.client.embed(
-                texts=[combined_text],
-                model=self.embedding_model,
-                input_type="search_query"
-            )
+            if self.use_cohere:
+                response = self.client.embed(
+                    texts=[combined_text],
+                    model=self.embedding_model,
+                    input_type="search_query"
+                )
+                embedding_result = response.embeddings[0]
+            else:
+                # Use OpenAI API
+                response = openai.embeddings.create(
+                    input=[combined_text],
+                    model=self.embedding_model
+                )
+                embedding_result = response.data[0].embedding
 
-            embedding_result = response.embeddings[0]
             # Cache the result with a default TTL of 1 hour
             caching_service.set(cache_key, embedding_result, ttl_seconds=3600)
 
@@ -86,14 +112,23 @@ class EmbeddingService:
         Generate embeddings for multiple texts
         """
         try:
-            response = self.client.embed(
-                texts=texts,
-                model=self.embedding_model,
-                input_type="search_document"  # Using document type for longer passages like book content
-            )
+            if self.use_cohere:
+                response = self.client.embed(
+                    texts=texts,
+                    model=self.embedding_model,
+                    input_type="search_document"  # Using document type for longer passages like book content
+                )
+                embeddings = response.embeddings
+            else:
+                # Use OpenAI API
+                response = openai.embeddings.create(
+                    input=texts,
+                    model=self.embedding_model
+                )
+                embeddings = [item.embedding for item in response.data]
 
-            embedding_logger.info(f"Generated {len(response.embeddings)} embeddings")
-            return response.embeddings
+            embedding_logger.info(f"Generated {len(embeddings)} embeddings")
+            return embeddings
 
         except Exception as e:
             embedding_logger.error(f"Error generating embeddings: {str(e)}")
