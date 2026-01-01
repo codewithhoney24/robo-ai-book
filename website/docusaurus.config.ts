@@ -82,7 +82,7 @@ const config: Config = {
     // Define custom fields to pass environment variables to the client
     customFields: {
       // These values will be available in the client-side code
-      REACT_APP_API_BASE_URL: process.env.REACT_APP_API_BASE_URL || 'https://web-production-3ced.up.railway.app/api',
+      REACT_APP_API_BASE_URL: process.env.REACT_APP_API_BASE_URL || 'https://web-production-3ced.up.railway.app/api/v1',
       onBrokenMarkdownImages: 'warn',
     },
 
