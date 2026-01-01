@@ -8,13 +8,13 @@ from src.database.connection import engine, AsyncSessionLocal, pool_status
 from src.database.models.connection_pool import ConnectionPoolModel
 from src.config.settings import settings
 from src.core.exceptions import (
-    DatabaseConnectionError, 
-    ConnectionPoolExhaustedError, 
+    DatabaseConnectionError,
+    ConnectionPoolExhaustedError,
     DatabaseTimeoutError
 )
 from src.database.utils import (
-    db_logger, 
-    validate_connection_pool_size, 
+    db_logger,
+    validate_connection_pool_size,
     validate_timeout_values
 )
 from src.services.error_handler import CircuitBreaker
@@ -28,7 +28,7 @@ class ConnectionPoolService:
     Service to manage database connections using pooling.
     Implements the connection pool model from the data model.
     """
-    
+
     def __init__(self):
         self.pool_size = settings.max_connections
         self.min_pool_size = settings.min_connections
@@ -37,23 +37,23 @@ class ConnectionPoolService:
         self.status = "active"  # Default status
         self.active_connections = 0
         self.queued_requests = 0
-        
+
         # Initialize circuit breaker for this service
         self.circuit_breaker = CircuitBreaker(
             failure_threshold=5,
             recovery_timeout=30  # 30 seconds
         )
-        
+
         # Validate configuration
         if not validate_connection_pool_size(self.pool_size):
             raise ValueError(f"Invalid pool size: {self.pool_size}")
-        
+
         if not validate_timeout_values(self.connection_timeout, self.command_timeout):
             raise ValueError(
                 f"Invalid timeout values - connection: {self.connection_timeout}, "
                 f"command: {self.command_timeout}"
             )
-    
+
     @asynccontextmanager
     async def get_connection(self):
         """
@@ -65,23 +65,23 @@ class ConnectionPoolService:
                 message="Circuit breaker is open, database temporarily unavailable",
                 connection_count=self.active_connections
             )
-        
+
         start_time = time.time()
         connection_acquired = False
-        
+
         try:
             # Increment active connections counter
             self.active_connections += 1
-            
+
             # Get connection from the pool
             async with AsyncSessionLocal() as session:
                 connection_acquired = True
                 yield session
-                
+
         except Exception as e:
             logger.error(f"Database connection error: {e}")
             db_logger.log_error(e, context="Connection Pool Service")
-            
+
             if isinstance(e, asyncio.TimeoutError):
                 raise DatabaseTimeoutError(
                     timeout_duration=self.connection_timeout
@@ -94,22 +94,22 @@ class ConnectionPoolService:
             # Decrement active connections counter
             if connection_acquired:
                 self.active_connections -= 1
-                
+
             # Log connection operation performance
             duration = (time.time() - start_time) * 1000  # Convert to milliseconds
             db_logger.log_performance_metric(
-                operation="get_connection", 
+                operation="get_connection",
                 duration_ms=duration,
                 threshold_ms=self.command_timeout * 1000  # Convert to ms for comparison
             )
-    
+
     async def get_pool_status(self) -> Dict[str, Any]:
         """
         Get the current status of the connection pool.
         """
         # Update the status regularly to reflect current state
         await pool_status.update_status()
-        
+
         return {
             "status": self.status,
             "pool_size": self.pool_size,
@@ -118,10 +118,10 @@ class ConnectionPoolService:
             "min_pool_size": self.min_pool_size,
             "connection_timeout": self.connection_timeout,
             "command_timeout": self.command_timeout,
-            "circuit_breaker_state": self.circuit_breaker.state,
+            "circuit_breaker_state": self.circuit_breaker.state.value if hasattr(self.circuit_breaker.state, 'value') else str(self.circuit_breaker.state),
             "circuit_breaker_failures": self.circuit_breaker.failure_count
         }
-    
+
     async def validate_connection(self, session: AsyncSession) -> bool:
         """
         Validate that a database connection is still active.
@@ -133,7 +133,7 @@ class ConnectionPoolService:
         except Exception as e:
             logger.error(f"Connection validation failed: {e}")
             return False
-    
+
     async def execute_with_retry(self, operation_func, max_retries: Optional[int] = None):
         """
         Execute a database operation with retry logic.
@@ -141,59 +141,59 @@ class ConnectionPoolService:
         """
         if max_retries is None:
             max_retries = settings.retry_attempts
-            
+
         last_exception = None
-        
+
         for attempt in range(max_retries):
             try:
                 if self.circuit_breaker.is_open():
                     raise ConnectionPoolExhaustedError(
                         message="Circuit breaker is open, database temporarily unavailable"
                     )
-                
+
                 # Execute the operation
                 result = await operation_func()
-                
+
                 # If successful, reset circuit breaker
                 self.circuit_breaker.record_success()
-                
+
                 # Log successful operation
                 db_logger.log_connection_event(
-                    "operation_success", 
+                    "operation_success",
                     {"attempt": attempt + 1, "operation": operation_func.__name__}
                 )
-                
+
                 return result
-                
+
             except Exception as e:
                 last_exception = e
-                
+
                 # Log the failure
                 db_logger.log_error(
-                    e, 
+                    e,
                     context=f"Operation failed on attempt {attempt + 1}: {operation_func.__name__}"
                 )
-                
+
                 # Record failure in circuit breaker
                 self.circuit_breaker.record_failure()
-                
+
                 # If this was the last attempt, don't sleep before raising
                 if attempt == max_retries - 1:
                     break
-                
+
                 # Sleep with exponential backoff and jitter
                 # Formula: base_delay * (multiplier ^ attempt) + random_jitter
                 base_delay = 0.1  # 100ms base delay
                 delay = base_delay * (2 ** attempt)  # Exponential backoff
                 jitter = asyncio.random.uniform(0, 0.1)  # 0-100ms jitter
                 total_delay = delay + jitter
-                
+
                 logger.info(f"Retrying operation in {total_delay:.2f} seconds...")
                 await asyncio.sleep(total_delay)
-        
+
         # If all retries failed, raise the last exception
         raise last_exception
-    
+
     def update_status(self, new_status: str):
         """
         Update the status of the connection pool.
