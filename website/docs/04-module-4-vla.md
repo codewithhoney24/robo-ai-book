@@ -1,4 +1,6 @@
 ---
+id: module-4-vla
+slug: /module-4/vla-robotics
 difficulty: Advanced
 category: VLA-AI
 hardware_focus: [RTX-GPU, Jetson-Orin]

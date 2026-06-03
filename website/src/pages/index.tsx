@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
-import HomepageFeatures from '@site/src/components/HomepageFeatures/index';
+import HomepageFeatures from '../components/HomepageFeatures/index';
 import Heading from '@theme/Heading';
 
 import styles from './index.module.css';
@@ -39,7 +39,7 @@ function HomepageHeader() {
         <div className={styles.buttons}>
           <Link to="/module/m0-w1-2-introduction-to-physical-ai" className={styles.primaryButton}>Start Learning</Link>
           <Link
-  to={String(siteConfig.customFields?.githubUrl || '/')}
+  to="https://github.com/codewithhoney24/robo-ai-book"
   className={styles.secondaryButton}
   target="_blank"
   rel="noopener noreferrer"

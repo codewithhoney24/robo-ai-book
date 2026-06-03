@@ -11,6 +11,7 @@ type FeatureItem = {
   description: ReactNode;
   weeks: string;
   tech: string;
+  link: string;
 };
 
 const FeatureList: FeatureItem[] = [
@@ -25,11 +26,12 @@ const FeatureList: FeatureItem[] = [
     ),
     weeks: 'Weeks 1-5',
     tech: 'Python • rclpy • URDF',
+    link: '/module/module-1/ros2-fundamentals',
   },
   {
     number: '02',
     icon: '💻',
-    title: 'The Digital Twin',
+    title: 'The Digital Twin in Robotics',
     description: (
       <>
         Simulate physics-accurate environments in Gazebo. Test robots in virtual worlds before deploying to expensive hardware.
@@ -37,6 +39,7 @@ const FeatureList: FeatureItem[] = [
     ),
     weeks: 'Weeks 6-7',
     tech: 'Gazebo • Unity • SDF',
+    link: '/module/module-2/digital-twin',
   },
   {
     number: '03',
@@ -49,10 +52,11 @@ const FeatureList: FeatureItem[] = [
     ),
     weeks: 'Weeks 8-12',
     tech: 'Isaac Sim • Isaac ROS • Nav2',
+    link: '/module/module-3/isaac-brain',
   },
 ];
 
-function Feature({number, icon, title, description, weeks, tech}: FeatureItem) {
+function Feature({number, icon, title, description, weeks, tech, link}: FeatureItem) {
   return (
     <div className={clsx('col col--4')}>
       <div className={styles.card}>
@@ -62,7 +66,7 @@ function Feature({number, icon, title, description, weeks, tech}: FeatureItem) {
         <p className={styles.cardDescription}>{description}</p>
         <p className={styles.cardWeeks}>{weeks}</p>
         <p className={styles.cardTech}>{tech}</p>
-        <a href={`/docs/module-${number}`} className={styles.featureButton}>Learn More</a>
+        <a href={link} className={styles.featureButton}>Learn More</a>
 
       </div>
     </div>

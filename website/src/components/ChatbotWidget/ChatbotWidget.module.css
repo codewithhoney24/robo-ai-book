@@ -65,7 +65,7 @@
   bottom: 110px; /* Icon height (90px) + space */
   right: 0;
   
-  width: 320px; /* Thoda kam kiya taaki image ke frame jaisa lage */
+  width: 360px; /* Thoda kam kiya taaki image ke frame jaisa lage */
   height: 500px; /* Height increased */
   
   background-color: var(--main-dark); /* Dark background */

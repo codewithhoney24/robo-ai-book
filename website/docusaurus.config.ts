@@ -169,7 +169,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Physical AI. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Nousheen Atif | Physical AI Robotic Book`,
     },
 
     prism: {

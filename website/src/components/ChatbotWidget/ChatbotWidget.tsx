@@ -143,12 +143,17 @@ const ChatbotWidget: React.FC = () => {
         }),
       });
 
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail?.message || errorData.message || 'Backend Error');
+      }
+
       const data = await response.json();
 
       // Bot ka jawab add kiya - UPDATED with ID
       const botMessage: Message = {
         role: 'bot',
-        content: data.content,
+        content: data.content || "I'm sorry, I couldn't generate a response.",
         id: Date.now() + 1,
         urdu: undefined
       };
@@ -299,7 +304,7 @@ const ChatbotWidget: React.FC = () => {
                 className={styles.footerButton}
                 onClick={sendSelectedTextToChat}
                 title="Send selected text to chat"
-                style={{ backgroundColor: '#28a745', marginRight: '5px' }}
+                style={{ backgroundColor: '#28a745', marginRight: '3px' }}
               >
                 📝
               </button>

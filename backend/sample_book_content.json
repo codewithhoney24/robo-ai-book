@@ -28,5 +28,11 @@
     "content": "Chapter 5: Planning and Decision Making. Planning and decision making are essential functions for autonomous agents and robots. AI planning involves determining a sequence of actions to achieve a goal. This can be done in various environments, including deterministic and non-deterministic ones. Motion planning in robotics focuses on finding a path for a robot to move from one position to another while avoiding obstacles. Decision making in AI often involves reasoning under uncertainty, using techniques like probability theory, decision trees, and utility theory. The integration of planning and perception allows robots to operate effectively in dynamic environments.",
     "source_location": "Chapter 5, Page 111-145",
     "book_id": "ai_robotics_book"
+  },
+  {
+    "id": "ch6_digital_twin",
+    "content": "Chapter 6: Digital Twins in Robotics. A Digital Twin is a virtual representation of a physical object or system that is updated from real-time data and uses simulation, machine learning, and reasoning to help decision making. In robotics, a Digital Twin allows engineers to simulate robot behavior in a virtual environment before deploying it to the physical world. This is useful for testing control algorithms, predicting maintenance needs, and optimizing performance without risking damage to expensive hardware. Digital Twins bridge the gap between simulation and reality, enabling 'Sim-to-Real' transfer for complex robotic tasks.",
+    "source_location": "Chapter 6, Page 146-170",
+    "book_id": "ai_robotics_book"
   }
 ]

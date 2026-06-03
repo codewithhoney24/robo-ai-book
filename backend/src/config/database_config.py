@@ -44,6 +44,8 @@ engine = create_async_engine(
         },
         "command_timeout": settings.command_timeout,
         "timeout": settings.connection_timeout,
+        "statement_cache_size": 0,
+        "prepared_statement_cache_size": 0
     }
 )
 

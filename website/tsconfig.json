@@ -12,7 +12,7 @@
     "forceConsistentCasingInFileNames": true,
     "ignoreDeprecations": "6.0",
     "paths": {
-      "@site/*": ["./src/*"],
+      "@site/*": ["./*"],
       "@theme/*": ["./src/theme/*"],
       "@components/*": ["./src/components/*"],
       "@css/*": ["./src/css/*"]

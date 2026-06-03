@@ -1,4 +1,6 @@
 ---
+id: module-3-isaac
+slug: /module-3/isaac-brain
 difficulty: Intermediate
 category: NVIDIA-Isaac
 hardware_focus: [RTX-GPU, Jetson-Orin]

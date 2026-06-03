@@ -54,6 +54,9 @@ class Settings(BaseSettings):
 
     # Database settings
     database_url: str = "sqlite:///./dev.db"  # Default value from .env
+    
+    # CORS settings
+    cors_origin: str = "http://localhost:3000"
 
     # Other settings
     qwen_cli_path: str = ""
