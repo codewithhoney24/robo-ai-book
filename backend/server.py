@@ -1,15 +1,18 @@
 import uvicorn
+import os
 from src.api.main import app
 from src.config.settings import settings
 
 
 def start_server():
     """
-    Start the FastAPI server with proper configuration to avoid address binding issues.
+    Start the FastAPI server with proper configuration for deployment.
     """
-    # Ensure we always bind to 127.0.0.1 (localhost) for local development
-    host = settings.host if settings.host != "0.0.0.0" else "127.0.0.1"
-    port = settings.port
+    # Use 0.0.0.0 for deployment (Hugging Face / Docker)
+    host = "0.0.0.0"
+    
+    # Get port from environment variable (Hugging Face uses 7860)
+    port = int(os.environ.get("PORT", settings.port))
 
     print(f"Starting server on {host}:{port}")
     print(f"Server running at: http://{host}:{port}")
