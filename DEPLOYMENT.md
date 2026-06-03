@@ -1,85 +1,51 @@
-# Robo-AI-Book Platform Deployment
+# Deployment Guide for Physical AI & Humanoid Robotics Platform
 
-This document explains how to deploy the Robo-AI-Book platform to Railway.
+This document explains how to deploy the Robo-AI-Book platform to Hugging Face Spaces.
 
-## Project Overview
+## 🚀 Hugging Face Deployment (Backend)
+Hugging Face Spaces is an excellent platform for hosting AI-powered backend services using Docker.
 
-The Robo-AI-Book platform is a Physical AI textbook platform with the following features:
-- RAG (Retrieval Augmented Generation) chatbot for textbook content
-- Content personalization based on user preferences
-- Translation services (Urdu and other languages)
-- System logging and monitoring
+### Prerequisites
+1.  A Hugging Face account.
+2.  Hugging Face CLI installed (optional, but recommended).
+3.  Docker installed for local testing.
 
-## Architecture
+### Steps to Deploy
+1.  **Create a New Space**:
+    - Go to Hugging Face and create a new Space.
+    - Select **Docker** as the SDK.
+2.  **Configure Environment Variables**:
+    - In your Space settings, add the following secrets:
+        - `COHERE_API_KEY`: Your Cohere API key.
+        - `OPENAI_API_KEY`: Your OpenAI API key.
+        - `NEON_DATABASE_URL`: Your Neon Postgres connection string.
+        - `QDRANT_API_KEY`: Your Qdrant API key.
+        - `QDRANT_ENDPOINT`: Your Qdrant cluster endpoint.
+3.  **Push the Code**:
+    - Push the `backend` folder content to the Hugging Face Space repository.
+    - Ensure your `Dockerfile` is in the root of the Space repository.
 
-The platform consists of:
-- **Backend**: FastAPI application in the `backend/` directory
-- **Frontend**: Docusaurus website in the `website/` directory
-- **Database**: PostgreSQL (Neon) for storing user queries and responses
-- **Vector Store**: Qdrant for content retrieval
-- **AI Services**: Cohere and OpenAI for embeddings and generation
+---
 
-## Deployment Steps
+## 🌐 Frontend Deployment (Docusaurus)
+The frontend can be deployed to **Vercel**, **Netlify**, or even as a static Space on Hugging Face.
 
-1. **Log in to Railway**:
-   ```bash
-   railway login
-   ```
-   
-2. **Navigate to the project directory**:
-   ```bash
-   cd ai-robo-bk
-   ```
+### Steps for Vercel/Netlify
+1.  Connect your GitHub repository to Vercel/Netlify.
+2.  Set the `Root Directory` to `website`.
+3.  Set the build command: `npm run build`.
+4.  Set the output directory: `build`.
+5.  Add environment variable:
+    - `REACT_APP_API_BASE_URL`: `https://<your-space-name>.hf.space/api/v1`
 
-3. **Link the project to a new or existing Railway service**:
-   ```bash
-   railway init
-   ```
+---
 
-4. **Set environment variables**:
-   ```bash
-   railway var set COHERE_API_KEY=<your-cohere-api-key>
-   railway var set OPENAI_API_KEY=<your-openai-api-key>
-   railway var set DATABASE_URL=<your-postgresql-url>
-   railway var set QDRANT_API_KEY=<your-qdrant-api-key>
-   railway var set QDRANT_ENDPOINT=<your-qdrant-endpoint>
-   ```
+## 🏗️ Docker Configuration
+The project includes a `Dockerfile` optimized for Hugging Face Spaces. It uses a non-root user (UID 1000) as required by the platform.
 
-5. **Deploy the application**:
-   ```bash
-   railway up
-   ```
-
-## Environment Variables Required
-
-The following environment variables need to be set for the application to work correctly:
-
-- `COHERE_API_KEY`: API key for Cohere services
-- `OPENAI_API_KEY`: API key for OpenAI services
-- `DATABASE_URL`: PostgreSQL database connection string
-- `QDRANT_API_KEY`: API key for Qdrant vector store
-- `QDRANT_ENDPOINT`: Endpoint URL for Qdrant vector store
-
-## Project Configuration
-
-The project is configured for Railway deployment with:
-- A `railway.json` file specifying build and deployment settings
-- A `Dockerfile` for containerized deployment
-- A `Procfile` for process management
-- A `runtime.txt` specifying the Python version
-
-## Monitoring
-
-After deployment, you can monitor your application using:
-- `railway logs` - View application logs
-- `railway dashboard` - Open the Railway dashboard in your browser
-- `railway status` - Check the status of your deployments
-
-## Troubleshooting
-
-If you encounter issues during deployment:
-
-1. Check that all required environment variables are set
-2. Verify that your API keys are valid and have the necessary permissions
-3. Review the logs with `railway logs` for error messages
-4. Ensure that your database connection string is properly formatted
+### Running Locally with Docker
+```bash
+docker build -t robo-ai-backend .
+docker run -p 7860:7860 --env-file .env robo-ai-backend
+```
+Note: Hugging Face Spaces typically use port **7860**.

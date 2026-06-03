@@ -31,8 +31,15 @@ RUN if [ -f "requirements.txt" ]; then pip install --no-cache-dir -r requirement
 # Go back to the main directory
 WORKDIR /app
 
-# Expose port
-EXPOSE $PORT
+# Expose port (Hugging Face Spaces defaults to 7860)
+ENV PORT=7860
+EXPOSE 7860
+
+# Create a non-root user and switch to it
+RUN useradd -m -u 1000 user
+USER user
+ENV HOME=/home/user
+ENV PATH=/home/user/.local/bin:$PATH
 
 # Run the application
 CMD ["python", "main.py"]

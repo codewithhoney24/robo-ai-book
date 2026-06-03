@@ -62,4 +62,4 @@ Contains the Markdown files for the modules:
 - **Backend:** FastAPI, Pydantic, Uvicorn.
 - **AI/ML:** Cohere (Embeddings), OpenAI (LLM), Whisper (Speech).
 - **Database:** Neon Postgres (Relational), Qdrant (Vector).
-- **Deployment:** Railway (Production), Docker.
+- **Deployment:** Hugging Face Spaces (Production), Docker.
