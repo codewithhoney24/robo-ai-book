@@ -11,7 +11,7 @@ This document describes the setup for deploying the AI Robotics Book application
 ## ⚙️ Backend Setup (Hugging Face Spaces)
 
 ### API Endpoints
-The backend API will be available at your Space's direct URL (e.g., `https://nousheenatif-robo-ai-backend.hf.space/api/v1`).
+The backend API will be available at your Space's direct URL (e.g., `https://codewithhoney24-robobook.hf.space/api/v1`).
 
 ### Environment Variables (Secrets)
 You must set these in the "Settings" tab of your Hugging Face Space:
@@ -29,7 +29,7 @@ The frontend needs to know where the backend is located. This is configured via 
 
 ### Configuration
 In `website/docusaurus.config.ts`, the default fallback is set to:
-`https://nousheenatif-robo-ai-backend.hf.space/api/v1`
+`https://codewithhoney24-robobook.hf.space/api/v1`
 
 ---
 
