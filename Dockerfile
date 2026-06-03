@@ -25,24 +25,23 @@ ENV HOME=/home/user
 ENV PATH=/home/user/.local/bin:$PATH
 WORKDIR $HOME/app
 
-# Copy requirements and install
+# Copy ALL requirements files
 COPY --chown=user requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY --chown=user backend/requirements.txt ./backend_requirements.txt
 
-# Copy everything
+# Install all dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r backend_requirements.txt
+
+# Copy everything into the container
 COPY --chown=user . .
 
-# Install backend specific requirements
-RUN if [ -f "backend/requirements.txt" ]; then pip install --no-cache-dir -r backend/requirements.txt; fi
-
-# IMPORTANT: Change directory to backend folder so 'src' is a top-level package
-WORKDIR $HOME/app/backend
-
-# Set Python path
+# Set Python path to find src module inside backend folder
 ENV PYTHONPATH=$HOME/app/backend
 
-# Expose port 7860 for Hugging Face
+# Expose port
 EXPOSE 7860
 
-# Run uvicorn directly
-CMD ["python", "-m", "uvicorn", "src.api.main:app", "--host", "0.0.0.0", "--port", "7860"]
+# CMD to run the backend server correctly
+# Since we are in $HOME/app, we run uvicorn pointing to the module path
+CMD ["python", "-m", "uvicorn", "backend.src.api.main:app", "--host", "0.0.0.0", "--port", "7860"]
